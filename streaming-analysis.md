@@ -1175,14 +1175,14 @@ if ( $jsonp_callback ) {
 
 One `echo` call with the complete JSON string. No flushing, no chunked output.
 
-**5. Content-Type is hardcoded to JSON (line 318)**
+**5. Content-Type defaults to JSON or JavaScript (line 317-318)**
 
 ```php
 $content_type = ( $jsonp_callback && $jsonp_enabled ) ? 'application/javascript' : 'application/json';
 $this->send_header( 'Content-Type', $content_type . '; charset=' . get_option( 'blog_charset' ) );
 ```
 
-SSE requires `Content-Type: text/event-stream`. This header is sent **before** routing, so by the time a streaming endpoint's handler runs, the wrong Content-Type is already sent.
+The Content-Type is determined before routing: `application/json` for standard requests, `application/javascript` when JSONP is active. Neither supports SSE (`text/event-stream`). This header is sent **before** the endpoint handler runs, so by the time a streaming handler executes, the wrong Content-Type is already sent.
 
 **6. No output buffering control**
 
