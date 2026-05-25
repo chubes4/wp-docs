@@ -2,7 +2,7 @@
 
 ## Purpose
 
-`wordpress-core-docs` uses `docs-agent` to generate WordPress Core documentation from public source material.
+`wp-docs` uses `docs-agent` to generate WordPress core and canonical plugin documentation from public source material.
 
 The project should become both the generation workspace and the future publishing foundation for a WordPress.org-compatible docs experience that is comprehensive, massively useful, and pleasant to navigate.
 
@@ -11,9 +11,9 @@ The quality target is not merely "generated documentation exists." The target is
 ## Product Model
 
 ```text
-wordpress-core-docs
+wp-docs
   = project-specific docs-agent inputs
-  + generated WordPress Core documentation corpus
+  + generated WordPress core and canonical plugin documentation corpus
   + page-level provenance and review metadata
   + WP Codebox recipes for reproducible runs
   + WordPress-native theme prototype
@@ -43,7 +43,7 @@ This repo should not reimplement the surrounding tools:
 
 - `docs-agent` owns reusable agent bundles, prompt policy, and docs maintenance behavior.
 - `wp-codebox` owns sandbox recipes, isolated WordPress execution, previews, and artifact bundle shape.
-- `wordpress-core-docs` owns the WordPress Core docs project: source inventories, content lanes, project-specific recipes, review decisions, and publishing direction.
+- `wp-docs` owns the WordPress docs project: source inventories, content lanes, project-specific recipes, review decisions, and publishing direction.
 
 ## WordPress.org Compatibility
 
@@ -57,7 +57,7 @@ The project should assume that successful output eventually needs to fit WordPre
 
 ## Theme Direction
 
-The theme lives in this repo at `theme/wordpress-core-docs/` so the generated corpus and publishing experience can evolve together.
+The theme lives in this repo at `theme/wp-docs/` so the generated corpus and publishing experience can evolve together.
 
 The first theme should be a WordPress-native block theme. Tailwind, shadcn, and similar docs sites are structural references for information architecture, navigation patterns, page density, and example presentation; they are not dependency requirements.
 
@@ -69,7 +69,7 @@ Successful output should be competitive with excellent documentation products, n
 
 Key expectations:
 
-- Comprehensive coverage of WordPress Core concepts, APIs, behavior, and workflows.
+- Comprehensive coverage of WordPress core and canonical plugin concepts, APIs, behavior, and workflows.
 - Navigation that makes the corpus feel intentionally designed rather than mechanically generated.
 - Strong examples that show real usage, edge cases, and common mistakes.
 - Search and indexes that help readers recover from not knowing the exact term.
@@ -79,6 +79,6 @@ Key expectations:
 
 ## Previous Corpus
 
-The first generated corpus is preserved on `archive/sarai-v1-generated-corpus` and tag `sarai-v1-generated-corpus`.
+The first generated WordPress Core corpus is preserved on `archive/sarai-v1-generated-corpus` and tag `sarai-v1-generated-corpus`.
 
 Use it as a baseline and seed, not as the canonical structure.

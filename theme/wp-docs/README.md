@@ -1,6 +1,6 @@
-# WordPress Core Docs Theme
+# WP Docs Theme
 
-Prototype WordPress block theme for the generated WordPress Core docs experience.
+Prototype WordPress block theme for the generated WordPress core and canonical plugin docs experience.
 
 This theme lives in the monorepo so content generation, content structure, and presentation can evolve together. It is intentionally WordPress-native. Tailwind, shadcn, and other modern docs sites are structural references for navigation, information architecture, page density, examples, and polish; they are not dependency requirements.
 

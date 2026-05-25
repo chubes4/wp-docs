@@ -1,8 +1,8 @@
-# WordPress Core Docs
+# WP Docs
 
-This repository is an active experiment for generating WordPress Core documentation with `docs-agent`.
+This repository is an active experiment for generating WordPress core and canonical plugin documentation with `docs-agent`.
 
-The goal is to produce comprehensive, massively useful WordPress Core documentation that is accurate, source-verified, and pleasant to navigate. The output should meet the quality bar set by the best modern documentation sites while fitting the WordPress.org documentation ecosystem.
+The goal is to produce comprehensive, massively useful WordPress documentation that is accurate, source-verified, and pleasant to navigate. The output should meet the quality bar set by the best modern documentation sites while fitting the WordPress.org documentation ecosystem.
 
 ## Current Direction
 
@@ -13,7 +13,7 @@ This repo is being reset around the generation workflow, content policy, provena
 - `sources/` — project-specific source inventories and generation targets.
 - `content/` — generated and reviewed documentation outputs plus page-level metadata.
 - `recipes/` — project-specific WP Codebox recipes for reproducible generation and review runs.
-- `theme/wordpress-core-docs/` — prototype WordPress block theme for the docs experience.
+- `theme/wp-docs/` — prototype WordPress block theme for the docs experience.
 - `docs/` — project architecture, decisions, and operating notes.
 
 ## Archived Corpus
@@ -40,4 +40,4 @@ That archive is useful as seed material and historical context, but it is not th
 
 - `docs-agent` owns reusable agent behavior, prompts, and bundle mechanics.
 - `wp-codebox` owns isolated WordPress execution, recipes, previews, and artifact bundles.
-- This repo owns WordPress Core docs inputs, generated content, project-specific recipes, and publishing direction.
+- This repo owns WordPress core and canonical plugin docs inputs, generated content, project-specific recipes, and publishing direction.
