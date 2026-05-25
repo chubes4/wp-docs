@@ -10,12 +10,9 @@ This repo is being reset around the generation workflow, content policy, provena
 
 ## Repository Layout
 
-- `agent/` — docs-agent configuration, prompts, policies, and generation notes.
-- `sources/` — public source manifests and inventories used by generation.
-- `content/` — generated and reviewed documentation outputs.
-- `provenance/` — source maps, generation metadata, coverage reports, and review state.
-- `site/` — WordPress site, import, and theme work when the publishing surface is ready.
-- `tools/` — scripts and utilities that support generation, validation, and import.
+- `sources/` — project-specific source inventories and generation targets.
+- `content/` — generated and reviewed documentation outputs plus page-level metadata.
+- `recipes/` — project-specific WP Codebox recipes for reproducible generation and review runs.
 - `docs/` — project architecture, decisions, and operating notes.
 
 ## Archived Corpus
@@ -31,6 +28,12 @@ That archive is useful as seed material and historical context, but it is not th
 
 - Generate from public WordPress source and public documentation sources.
 - Keep generated drafts reproducible and disposable.
-- Preserve provenance for every reviewed or published page.
+- Preserve provenance in generated page metadata and WP Codebox artifacts rather than inventing another artifact format here.
 - Separate user-facing docs, developer docs, reference material, and internals.
 - Optimize for eventual WordPress.org compatibility, not a standalone side project.
+
+## Boundaries
+
+- `docs-agent` owns reusable agent behavior, prompts, and bundle mechanics.
+- `wp-codebox` owns isolated WordPress execution, recipes, previews, and artifact bundles.
+- This repo owns WordPress Core docs inputs, generated content, project-specific recipes, and publishing direction.

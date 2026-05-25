@@ -10,9 +10,10 @@ The project should become both the generation workspace and the future publishin
 
 ```text
 wordpress-core-docs
-  = docs-agent generation workflow
+  = project-specific docs-agent inputs
   + generated WordPress Core documentation corpus
-  + provenance and review metadata
+  + page-level provenance and review metadata
+  + WP Codebox recipes for reproducible runs
   + eventual WordPress publishing surface
 ```
 
@@ -31,7 +32,15 @@ Generated content should move through explicit states:
 raw generated -> source verified -> reviewed -> publish candidate -> accepted
 ```
 
-Raw generated output is allowed to be replaced. Reviewed and accepted output should keep provenance, version, and review metadata.
+Raw generated output is allowed to be replaced. Reviewed and accepted output should keep provenance, version, and review metadata in content metadata and generated run artifacts.
+
+## Tool Boundaries
+
+This repo should not reimplement the surrounding tools:
+
+- `docs-agent` owns reusable agent bundles, prompt policy, and docs maintenance behavior.
+- `wp-codebox` owns sandbox recipes, isolated WordPress execution, previews, and artifact bundle shape.
+- `wordpress-core-docs` owns the WordPress Core docs project: source inventories, content lanes, project-specific recipes, review decisions, and publishing direction.
 
 ## WordPress.org Compatibility
 

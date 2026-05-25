@@ -1,6 +1,8 @@
 # Sources
 
-This directory tracks public source material used for generation.
+This directory tracks project-specific source inventories and generation targets.
+
+Do not vendor WordPress Core or Gutenberg source here. Generation and review runs should mount source checkouts through WP Codebox recipes or refer to public upstream revisions.
 
 Expected contents:
 
