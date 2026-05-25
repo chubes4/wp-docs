@@ -1,172 +1,36 @@
-# WordPress Core Documentation
+# WordPress Core Docs
 
-AI-generated documentation from WordPress core source code using [Homeboy](https://github.com/Extra-Chill/homeboy).
+This repository is an active experiment for generating WordPress Core documentation with `docs-agent`.
 
-## Purpose
+The goal is to produce accurate, source-verified documentation from WordPress Core and related public source material, then shape it into documentation that can eventually fit the WordPress.org documentation ecosystem.
 
-This documentation is generated directly from WordPress source code to provide accurate, up-to-date reference material. The generation process follows the principle of **code-first verification** — every documented feature is verified to exist in code.
+## Current Direction
 
-## Index
+This repo is being reset around the generation workflow, content policy, provenance model, and future publishing surface. Earlier generated material has been preserved for reference, but `main` is now the working surface for the next iteration.
 
-- [Getting Started](#getting-started)
-- [Content](#content)
-- [Users](#users)
-- [Queries](#queries)
-- [Themes](#themes)
-- [Blocks](#blocks)
-- [REST API](#rest-api)
-- [JavaScript](#javascript)
-- [Plugins](#plugins)
-- [Infrastructure](#infrastructure)
-- [Security](#security)
-- [Admin](#admin)
-- [Multisite](#multisite)
-- [Legacy](#legacy)
-- [Internals](#internals)
-- [Development](#development)
+## Repository Layout
 
-## Getting Started
+- `agent/` — docs-agent configuration, prompts, policies, and generation notes.
+- `sources/` — public source manifests and inventories used by generation.
+- `content/` — generated and reviewed documentation outputs.
+- `provenance/` — source maps, generation metadata, coverage reports, and review state.
+- `site/` — WordPress site, import, and theme work when the publishing surface is ready.
+- `tools/` — scripts and utilities that support generation, validation, and import.
+- `docs/` — project architecture, decisions, and operating notes.
 
-- [`root-files/`](./root-files/) — WordPress root entry points
-- [`bootstrap/`](./bootstrap/) — WordPress bootstrap process
-- [`wp-config/`](./wp-config/) — Configuration constants and setup
-- [`database-schema/`](./database-schema/) — Core database tables and schema
+## Archived Corpus
 
-## Content
+The previous generated corpus is preserved at:
 
-- [`posts/`](./posts/) — Post APIs and helpers
-- [`post-types/`](./post-types/) — Post type registration and management
-- [`taxonomies/`](./taxonomies/) — Taxonomy registration and terms
-- [`metadata/`](./metadata/) — Metadata APIs
-- [`comments/`](./comments/) — Comment APIs
-- [`media/`](./media/) — Media library and uploads
-- [`shortcodes/`](./shortcodes/) — Shortcode APIs
-- [`embeds/`](./embeds/) — oEmbed and embed helpers
+- Branch: `archive/sarai-v1-generated-corpus`
+- Tag: `sarai-v1-generated-corpus`
 
-## Users
+That archive is useful as seed material and historical context, but it is not the target information architecture for this project.
 
-- [`users/`](./users/) — User APIs
-- [`abilities-api/`](./abilities-api/) — Capabilities and abilities
-- [`application-passwords/`](./application-passwords/) — Application passwords
-- [`privacy/`](./privacy/) — Privacy tools and APIs
+## Principles
 
-## Queries
-
-- [`query/`](./query/) — Query classes and helpers
-- [`database/`](./database/) — Database access and abstraction
-
-## Themes
-
-- [`themes/`](./themes/) — Theme APIs
-- [`theme-json/`](./theme-json/) — Global styles and theme.json
-- [`template-tags/`](./template-tags/) — Template tag functions
-- [`customizer/`](./customizer/) — Customizer APIs
-- [`widgets/`](./widgets/) — Widget APIs
-- [`nav-menus/`](./nav-menus/) — Navigation menus
-- [`style-engine/`](./style-engine/) — Style Engine
-- [`fonts/`](./fonts/) — Web fonts and font collections
-
-## Blocks
-
-- [`blocks/`](./blocks/) — Block editor internals
-- [`core-blocks/`](./core-blocks/) — 106 core blocks (paragraph, image, columns, etc.)
-- [`block-bindings/`](./block-bindings/) — Block bindings
-- [`block-patterns/`](./block-patterns/) — Block patterns
-- [`block-templates/`](./block-templates/) — Block templates
-- [`block-development/`](./block-development/) — Block development utilities
-- [`interactivity-api/`](./interactivity-api/) — Interactivity API
-- [`editor/`](./editor/) — Editor APIs
-
-## REST API
-
-- [`rest-api/`](./rest-api/) — REST API
-- [`rest-api-controllers/`](./rest-api-controllers/) — REST controllers
-- [`rest-endpoints/`](./rest-endpoints/) — REST endpoints
-
-## JavaScript
-
-- [`scripts-styles/`](./scripts-styles/) — Script/style enqueueing
-- [`script-modules/`](./script-modules/) — Script modules
-- [`js-packages/`](./js-packages/) — Core JavaScript packages
-
-## Plugins
-
-- [`plugins/`](./plugins/) — Plugin APIs
-- [`plugin-dependencies/`](./plugin-dependencies/) — Plugin dependency management
-- [`hooks/`](./hooks/) — Actions and filters
-
-## Infrastructure
-
-- [`http/`](./http/) — HTTP API
-- [`cache/`](./cache/) — Object cache APIs
-- [`cron/`](./cron/) — WP-Cron
-- [`rewrite/`](./rewrite/) — Rewrite rules
-- [`l10n/`](./l10n/) — Localization
-- [`formatting/`](./formatting/) — Formatting helpers
-- [`errors/`](./errors/) — WP_Error and error handling
-- [`options/`](./options/) — Options API
-- [`email/`](./email/) — Email functions
-- [`sitemaps/`](./sitemaps/) — XML sitemaps
-- [`robots/`](./robots/) — Robots.txt handling
-- [`site-health/`](./site-health/) — Site Health checks
-- [`updates/`](./updates/) — Core update APIs
-
-## Security
-
-- [`recovery-mode/`](./recovery-mode/) — Recovery mode
-- [`https/`](./https/) — HTTPS detection and enforcement
-
-## Admin
-
-- [`admin-api/`](./admin-api/) — Admin APIs
-- [`admin-includes/`](./admin-includes/) — Admin include files
-- [`admin-bar/`](./admin-bar/) — Admin bar
-- [`ajax/`](./ajax/) — Admin AJAX handlers
-- [`wp-admin-pages/`](./wp-admin-pages/) — Admin page files
-
-## Multisite
-
-- [`multisite/`](./multisite/) — Multisite APIs
-
-## Legacy
-
-- [`xmlrpc/`](./xmlrpc/) — XML-RPC API
-- [`bookmarks/`](./bookmarks/) — Bookmarks (Blogroll)
-- [`feeds/`](./feeds/) — Feed generation
-- [`links/`](./links/) — Link manager
-
-## Internals
-
-- [`internals/`](./internals/) — Internal APIs
-- [`walkers/`](./walkers/) — Walker classes
-- [`diff/`](./diff/) — Diff utilities
-- [`utilities/`](./utilities/) — Core utilities
-- [`html-api/`](./html-api/) — HTML processing API
-
-## Development
-
-- [`coding-standards/`](./coding-standards/) — Core coding standards
-- [`wp-cli/`](./wp-cli/) — WP-CLI integration
-
-## Generation
-
-Documentation is generated using:
-
-```bash
-homeboy docs scaffold wp-includes  # Analyze structure
-# AI reads source, generates markdown
-homeboy docs audit wp-includes     # Verify alignment
-```
-
-## Contributing
-
-To regenerate or update documentation:
-
-1. Ensure WordPress core source is available
-2. Run scaffold to identify gaps
-3. Generate docs from source following [Homeboy guidelines](https://github.com/Extra-Chill/homeboy/blob/main/docs/documentation/generation.md)
-4. Run audit to verify
-
-## Version
-
-Generated from WordPress 6.9 (Development)
+- Generate from public WordPress source and public documentation sources.
+- Keep generated drafts reproducible and disposable.
+- Preserve provenance for every reviewed or published page.
+- Separate user-facing docs, developer docs, reference material, and internals.
+- Optimize for eventual WordPress.org compatibility, not a standalone side project.
