@@ -16,7 +16,8 @@ wordpress-core-docs
   + generated WordPress Core documentation corpus
   + page-level provenance and review metadata
   + WP Codebox recipes for reproducible runs
-  + eventual WordPress publishing surface
+  + WordPress-native theme prototype
+  + eventual WordPress.org publishing surface
 ```
 
 ## Documentation Lanes
@@ -53,6 +54,14 @@ The project should assume that successful output eventually needs to fit WordPre
 - Clear content provenance and review state.
 - Separation between user documentation and developer documentation.
 - Original implementation inspired by strong docs sites, not copied from source-available codebases.
+
+## Theme Direction
+
+The theme lives in this repo at `theme/wordpress-core-docs/` so the generated corpus and publishing experience can evolve together.
+
+The first theme should be a WordPress-native block theme. Tailwind, shadcn, and similar docs sites are structural references for information architecture, navigation patterns, page density, and example presentation; they are not dependency requirements.
+
+The theme is a prototype extraction surface: build the docs experience here, then later cherry-pick or port the useful parts into the final WordPress.org implementation path.
 
 ## Product Quality Bar
 

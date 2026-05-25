@@ -13,6 +13,7 @@ This repo is being reset around the generation workflow, content policy, provena
 - `sources/` — project-specific source inventories and generation targets.
 - `content/` — generated and reviewed documentation outputs plus page-level metadata.
 - `recipes/` — project-specific WP Codebox recipes for reproducible generation and review runs.
+- `theme/wordpress-core-docs/` — prototype WordPress block theme for the docs experience.
 - `docs/` — project architecture, decisions, and operating notes.
 
 ## Archived Corpus
@@ -33,6 +34,7 @@ That archive is useful as seed material and historical context, but it is not th
 - Treat navigation, search, examples, and information architecture as first-class product work.
 - Compare the result against leading documentation sites, not against the minimum viable generated output.
 - Optimize for eventual WordPress.org compatibility, not a standalone side project.
+- Use strong documentation sites as structural references for information architecture and navigation, not as code or dependency templates.
 
 ## Boundaries
 
