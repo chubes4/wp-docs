@@ -2,7 +2,7 @@
 
 This repository is an active experiment for generating WordPress Core documentation with `docs-agent`.
 
-The goal is to produce accurate, source-verified documentation from WordPress Core and related public source material, then shape it into documentation that can eventually fit the WordPress.org documentation ecosystem.
+The goal is to produce comprehensive, massively useful WordPress Core documentation that is accurate, source-verified, and pleasant to navigate. The output should meet the quality bar set by the best modern documentation sites while fitting the WordPress.org documentation ecosystem.
 
 ## Current Direction
 
@@ -30,6 +30,8 @@ That archive is useful as seed material and historical context, but it is not th
 - Keep generated drafts reproducible and disposable.
 - Preserve provenance in generated page metadata and WP Codebox artifacts rather than inventing another artifact format here.
 - Separate user-facing docs, developer docs, reference material, and internals.
+- Treat navigation, search, examples, and information architecture as first-class product work.
+- Compare the result against leading documentation sites, not against the minimum viable generated output.
 - Optimize for eventual WordPress.org compatibility, not a standalone side project.
 
 ## Boundaries

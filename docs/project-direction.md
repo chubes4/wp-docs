@@ -4,7 +4,9 @@
 
 `wordpress-core-docs` uses `docs-agent` to generate WordPress Core documentation from public source material.
 
-The project should become both the generation workspace and the future publishing foundation for a WordPress.org-compatible docs experience.
+The project should become both the generation workspace and the future publishing foundation for a WordPress.org-compatible docs experience that is comprehensive, massively useful, and pleasant to navigate.
+
+The quality target is not merely "generated documentation exists." The target is documentation on par with the best modern docs sites: clear information architecture, fast navigation, useful examples, trustworthy reference material, and paths that help different readers get from question to answer quickly.
 
 ## Product Model
 
@@ -51,6 +53,20 @@ The project should assume that successful output eventually needs to fit WordPre
 - Clear content provenance and review state.
 - Separation between user documentation and developer documentation.
 - Original implementation inspired by strong docs sites, not copied from source-available codebases.
+
+## Product Quality Bar
+
+Successful output should be competitive with excellent documentation products, not just acceptable as generated text.
+
+Key expectations:
+
+- Comprehensive coverage of WordPress Core concepts, APIs, behavior, and workflows.
+- Navigation that makes the corpus feel intentionally designed rather than mechanically generated.
+- Strong examples that show real usage, edge cases, and common mistakes.
+- Search and indexes that help readers recover from not knowing the exact term.
+- Clear audience paths for site owners, builders, developers, and Core contributors.
+- Source-backed reference details with freshness and review status visible enough to build trust.
+- A reading experience that feels modern, fast, and worth using daily.
 
 ## Previous Corpus
 
