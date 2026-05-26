@@ -18,6 +18,8 @@ This repo is being reset around the generation workflow, content policy, provena
 - `theme/wp-docs/` — prototype WordPress block theme for the docs experience.
 - `docs/` — project architecture, decisions, and operating notes.
 
+The full-coverage generation plan is tracked in `docs/full-coverage-generation-plan.md`.
+
 ## Archived Corpus
 
 The previous generated corpus is preserved at:

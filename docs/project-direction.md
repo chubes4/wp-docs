@@ -8,6 +8,8 @@ The project should become both the generation workspace and the future publishin
 
 The quality target is not merely "generated documentation exists." The target is documentation on par with the best modern docs sites: clear information architecture, fast navigation, useful examples, trustworthy reference material, and paths that help different readers get from question to answer quickly.
 
+The full-coverage generation plan is tracked in `docs/full-coverage-generation-plan.md`.
+
 ## Product Model
 
 ```text
