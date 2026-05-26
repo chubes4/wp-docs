@@ -11,8 +11,10 @@ This repo is being reset around the generation workflow, content policy, provena
 ## Repository Layout
 
 - `sources/` — project-specific source inventories and generation targets.
+- `agent/` — WP Docs-specific agent scope and bundle selection notes.
 - `content/` — generated and reviewed documentation outputs plus page-level metadata.
 - `recipes/` — project-specific WP Codebox recipes for reproducible generation and review runs.
+- `provenance/` — lightweight provenance conventions that belong with this corpus.
 - `theme/wp-docs/` — prototype WordPress block theme for the docs experience.
 - `docs/` — project architecture, decisions, and operating notes.
 

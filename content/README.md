@@ -12,3 +12,7 @@ Planned lanes:
 - `_meta/` — shared schemas, review ledgers, and content indexes that belong with the content corpus.
 
 Generated drafts should be reproducible. Reviewed content should keep page-level provenance and review metadata with the content. Full run artifacts should come from WP Codebox, not a custom artifact format in this repo.
+
+Current pilot output target:
+
+- `developer/script-modules/` — WordPress Core Script Modules API developer documentation.

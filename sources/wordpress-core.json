@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "id": "wordpress-core",
+  "name": "WordPress Core",
+  "source": {
+    "type": "git",
+    "url": "https://github.com/WordPress/wordpress-develop.git",
+    "default_branch": "trunk",
+    "workspace_handle": "wordpress-develop"
+  },
+  "documentation_lanes": [
+    "developer",
+    "reference",
+    "internals"
+  ],
+  "target_sets": [
+    {
+      "id": "script-modules-pilot",
+      "title": "Script Modules API pilot",
+      "status": "active-pilot",
+      "audience": "developer",
+      "source_paths": [
+        "src/wp-includes/script-modules.php",
+        "src/wp-includes/class-wp-script-modules.php",
+        "src/wp-includes/assets/script-modules-packages.php"
+      ],
+      "output_paths": [
+        "content/developer/script-modules/README.md",
+        "content/developer/script-modules/api.md",
+        "content/_meta/source-map.json"
+      ],
+      "acceptance_criteria": [
+        "Explains when and why to use Script Modules instead of classic scripts.",
+        "Documents public functions, expected arguments, lifecycle behavior, and common failure modes from source.",
+        "Includes source-backed examples for registering, enqueueing, and importing modules.",
+        "Records source commit, source files, generated timestamp, and review state in metadata."
+      ]
+    }
+  ]
+}

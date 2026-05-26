@@ -12,3 +12,7 @@ Expected contents:
 - Existing WordPress.org documentation inventories.
 - Source version metadata.
 - Coverage targets.
+
+Current manifests:
+
+- `wordpress-core.json` — WordPress Core source inventory and the Script Modules pilot target.

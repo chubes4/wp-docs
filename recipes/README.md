@@ -10,3 +10,7 @@ Expected contents:
 - Recipes that run docs-agent generation against a bounded source inventory.
 - Recipes that import generated docs into a WordPress preview site when that path is ready.
 - Notes that connect generated artifacts back to content review decisions.
+
+Current recipes:
+
+- `script-modules-pilot.md` — first bounded developer-docs generation pass for the WordPress Core Script Modules API.
