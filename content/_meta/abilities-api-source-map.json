@@ -1,0 +1,26 @@
+{
+    "schema_version": 1,
+    "target": "wordpress-core/abilities-api",
+    "generated_at": "2026-05-27T20:10:59+00:00",
+    "source_revision": "01debdf37c3ef3690dbe06988c71e63408de7c29",
+    "pages": [
+        {
+            "path": "content/page/developer/abilities-api/index.md"
+        },
+        {
+            "path": "content/page/developer/abilities-api/registering-abilities.md"
+        },
+        {
+            "path": "content/page/developer/abilities-api/ability-categories.md"
+        },
+        {
+            "path": "content/page/developer/abilities-api/running-abilities.md"
+        },
+        {
+            "path": "content/page/reference/abilities-api/functions.md"
+        },
+        {
+            "path": "content/page/reference/abilities-api/classes.md"
+        }
+    ]
+}
