@@ -1,0 +1,26 @@
+{
+    "schema_version": 1,
+    "generated_at": "2026-05-27T02:50:26+00:00",
+    "namespace": "wp-docs:wordpress-core:script-modules-pilot",
+    "source": {
+        "id": "wordpress-core",
+        "repo": "https://github.com/WordPress/wordpress-develop.git",
+        "branch": "trunk",
+        "revision": "01debdf37c3ef3690dbe06988c71e63408de7c29"
+    },
+    "target_set": "script-modules-pilot",
+    "total_items": 64,
+    "counts_by_type": {
+        "php-class": 1,
+        "php-function": 8,
+        "php-method": 28,
+        "script-module": 24,
+        "source-file": 3
+    },
+    "coverage_outputs": [
+        "coverage/wordpress-core/summary.json",
+        "coverage/wordpress-core/report.md",
+        "coverage/wordpress-core/gaps.md",
+        "content/_meta/source-map.json"
+    ]
+}
