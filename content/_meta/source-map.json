@@ -1,0 +1,539 @@
+{
+    "schema_version": 1,
+    "generated_at": "2026-05-27T02:50:26+00:00",
+    "source": {
+        "id": "wordpress-core",
+        "repo": "https://github.com/WordPress/wordpress-develop.git",
+        "branch": "trunk",
+        "revision": "01debdf37c3ef3690dbe06988c71e63408de7c29"
+    },
+    "target_sets": {
+        "script-modules-pilot": {
+            "namespace": "wp-docs:wordpress-core:script-modules-pilot",
+            "source_paths": [
+                "src/wp-includes/script-modules.php",
+                "src/wp-includes/class-wp-script-modules.php",
+                "src/wp-includes/assets/script-modules-packages.php"
+            ],
+            "output_paths": [
+                "content/developer/script-modules/README.md",
+                "content/developer/script-modules/api.md",
+                "content/_meta/source-map.json"
+            ],
+            "tracked_items": [
+                {
+                    "item_id": "file:src/wp-includes/script-modules.php",
+                    "item_type": "source-file",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 1,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "file:src/wp-includes/class-wp-script-modules.php",
+                    "item_type": "source-file",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 1,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "file:src/wp-includes/assets/script-modules-packages.php",
+                    "item_type": "source-file",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 1,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_script_modules",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 23,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_register_script_module",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 71,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_enqueue_script_module",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 115,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_dequeue_script_module",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 126,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_deregister_script_module",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 137,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_set_script_module_translations",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 158,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_default_script_modules",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 167,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "function:wp_enqueue_block_editor_script_modules",
+                    "item_type": "php-function",
+                    "source_path": "src/wp-includes/script-modules.php",
+                    "source_line": 229,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "class:WP_Script_Modules",
+                    "item_type": "php-class",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 26,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::register",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 133,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_queue",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 198,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::is_valid_fetchpriority",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 210,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::set_fetchpriority",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 223,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::set_in_footer",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 257,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::enqueue",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 305,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::dequeue",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 326,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::deregister",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 337,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::set_translations",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 358,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_script_module_translations",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 383,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::add_hooks",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 433,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_highest_fetchpriority",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 477,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_head_enqueued_script_modules",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 506,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_enqueued_script_modules",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 533,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_script_module",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 547,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_script_module_preloads",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 585,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_import_map",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 620,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_import_map",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 644,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_marked_for_enqueue",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 737,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_dependencies",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 759,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_dependents",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 798,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_recursive_dependents",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 829,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_sorted_dependencies",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 874,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::sort_item_dependencies",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 894,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_registered",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 955,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::get_src",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 971,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_script_module_data",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 1016,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "method:WP_Script_Modules::print_a11y_script_module_html",
+                    "item_type": "php-method",
+                    "source_path": "src/wp-includes/class-wp-script-modules.php",
+                    "source_line": 1132,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/a11y",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 2,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/abilities",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 8,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-editor/utils/fit-text-frontend",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 15,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/accordion/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 27,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/file/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 39,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/form/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 51,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/image/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 57,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/navigation/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 69,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/playlist/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 81,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/query/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 93,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/search/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 109,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/block-library/tabs/view",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 121,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/boot",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 133,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/connectors",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 171,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/core-abilities",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 182,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/edit-site-init",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 195,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/interactivity",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 210,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/interactivity-router/full-page",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 216,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/interactivity-router",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 228,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/latex-to-mathml",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 244,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/latex-to-mathml/loader",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 250,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/lazy-editor",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 262,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/route",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 278,
+                    "output_ref": "",
+                    "state": "discovered"
+                },
+                {
+                    "item_id": "script-module:@wordpress/workflow",
+                    "item_type": "script-module",
+                    "source_path": "src/wp-includes/assets/script-modules-packages.php",
+                    "source_line": 287,
+                    "output_ref": "",
+                    "state": "discovered"
+                }
+            ]
+        }
+    }
+}
