@@ -1,0 +1,24 @@
+{
+    "schema_version": 1,
+    "target": "wordpress-core/abilities-api",
+    "generated_at": "2026-05-27T20:10:59+00:00",
+    "source_revision": "01debdf37c3ef3690dbe06988c71e63408de7c29",
+    "status": "pilot-generated",
+    "source_files": [
+        "src/wp-includes/abilities-api.php",
+        "src/wp-includes/abilities.php",
+        "src/wp-includes/abilities-api/class-wp-ability.php",
+        "src/wp-includes/abilities-api/class-wp-abilities-registry.php",
+        "src/wp-includes/abilities-api/class-wp-ability-category.php",
+        "src/wp-includes/abilities-api/class-wp-ability-categories-registry.php",
+        "src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-list-controller.php",
+        "src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-run-controller.php",
+        "src/wp-includes/rest-api/endpoints/class-wp-rest-abilities-v1-categories-controller.php"
+    ],
+    "generated_pages": 6,
+    "coverage_notes": [
+        "Covers public procedural API, backing classes, category model, REST discovery, and REST execution flow.",
+        "Does not yet include exhaustive method-by-method class member reference or source line anchors.",
+        "Designed as a bounded editorial cluster for MDI/BFB/GitSync pipeline validation."
+    ]
+}
