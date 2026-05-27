@@ -1,0 +1,13 @@
+{
+  "id": "wp-docs-content-format-adapter",
+  "remote_path": "wp-content/plugins/wp-docs-content-format-adapter",
+  "extensions": {
+    "wordpress": {}
+  },
+  "version_targets": [
+    {
+      "file": "wp-docs-content-format-adapter.php",
+      "pattern": "Version:\\s*([\\d.]+)"
+    }
+  ]
+}
