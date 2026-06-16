@@ -148,6 +148,16 @@
       "name": "footer",
       "title": "Footer",
       "area": "footer"
+    },
+    {
+      "name": "docs-sidebar",
+      "title": "Docs Sidebar",
+      "area": "uncategorized"
+    },
+    {
+      "name": "on-this-page",
+      "title": "On This Page",
+      "area": "uncategorized"
     }
   ]
 }

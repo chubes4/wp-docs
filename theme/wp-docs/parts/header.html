@@ -1,6 +1,24 @@
-<!-- wp:group {"align":"full","style":{"border":{"bottom":{"color":"var:preset|color|border","width":"1px"}},"spacing":{"padding":{"top":"var:preset|spacing|30","right":"var:preset|spacing|40","bottom":"var:preset|spacing|30","left":"var:preset|spacing|40"}}},"layout":{"type":"flex","justifyContent":"space-between","flexWrap":"wrap"}} -->
-<div class="wp-block-group alignfull" style="border-bottom-color:var(--wp--preset--color--border);border-bottom-width:1px;padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--40);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--40)">
-<!-- wp:site-title {"level":0,"style":{"typography":{"fontStyle":"normal","fontWeight":"600"}}} /-->
-<!-- wp:navigation {"layout":{"type":"flex","justifyContent":"right"}} /-->
+<!-- wp:group {"align":"full","className":"wp-docs-header","style":{"border":{"bottom":{"color":"var:preset|color|border","width":"1px"}}},"layout":{"type":"constrained"}} -->
+<div class="wp-block-group alignfull wp-docs-header" style="border-bottom-color:var(--wp--preset--color--border);border-bottom-width:1px">
+<!-- wp:group {"align":"wide","className":"wp-docs-header__inner","layout":{"type":"flex","justifyContent":"space-between","flexWrap":"nowrap"}} -->
+<div class="wp-block-group alignwide wp-docs-header__inner">
+<!-- wp:group {"className":"wp-docs-header__brand","layout":{"type":"flex","flexWrap":"nowrap"}} -->
+<div class="wp-block-group wp-docs-header__brand">
+<label class="wp-docs-mobile-menu-button" for="wp-docs-nav-toggle">Menu</label>
+<!-- wp:site-title {"level":0,"className":"wp-docs-logo","style":{"typography":{"fontStyle":"normal","fontWeight":"700"}}} /-->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"wp-docs-header__actions","layout":{"type":"flex","justifyContent":"right","flexWrap":"nowrap"}} -->
+<div class="wp-block-group wp-docs-header__actions">
+<!-- wp:navigation {"overlayMenu":"mobile","className":"wp-docs-primary-nav","layout":{"type":"flex","justifyContent":"right"}} /-->
+<!-- wp:search {"label":"Search documentation","showLabel":false,"placeholder":"Search docs...","width":260,"widthUnit":"px","buttonText":"Search","buttonUseIcon":true,"className":"wp-docs-search"} /-->
+<!-- wp:paragraph {"className":"wp-docs-source-link"} -->
+<p class="wp-docs-source-link"><a href="https://github.com/chubes4/wp-docs">GitHub</a></p>
+<!-- /wp:paragraph -->
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
 </div>
 <!-- /wp:group -->
