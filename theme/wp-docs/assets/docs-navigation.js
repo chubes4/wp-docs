@@ -41,7 +41,7 @@
 
 		let ticking = false;
 		const getOffset = () => {
-			const headerHeight = parseFloat( getComputedStyle( document.documentElement ).getPropertyValue( '--wp-docs-header-height' ) ) || 64;
+			const headerHeight = parseFloat( window.getComputedStyle( document.documentElement ).getPropertyValue( '--wp-docs-header-height' ) ) || 64;
 
 			return headerHeight + 32;
 		};
@@ -81,7 +81,6 @@
 	}
 
 	function buildToc() {
-		const shell = document.querySelector( '[data-wp-docs-shell]' );
 		const content = document.querySelector( '[data-wp-docs-content]' );
 		const tocContainer = document.querySelector( '[data-wp-docs-toc]' );
 		const toc = document.querySelector( '[data-wp-docs-toc-list]' );
@@ -90,6 +89,7 @@
 			return;
 		}
 
+		const shell = document.querySelector( '[data-wp-docs-shell]' );
 		const headings = Array.from( content.querySelectorAll( 'h2, h3, h4' ) ).filter( ( heading ) => getHeadingText( heading ) );
 		const usedIds = new Set();
 
