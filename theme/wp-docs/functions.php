@@ -5,8 +5,66 @@
  * @package WPDocs
  */
 
+add_action( 'init', 'wp_docs_register_source_content_types' );
 add_action( 'init', 'wp_docs_register_dynamic_blocks' );
 add_action( 'wp_enqueue_scripts', 'wp_docs_enqueue_assets' );
+
+/**
+ * Register source-shaped documentation content types for the docs scratchpad.
+ */
+function wp_docs_register_source_content_types(): void {
+	register_post_type(
+		'helphub_article',
+		array(
+			'labels'             => array(
+				'name'          => __( 'WordPress.org Articles', 'wp-docs' ),
+				'singular_name' => __( 'WordPress.org Article', 'wp-docs' ),
+			),
+			'description'        => __( 'Mirror of wordpress.org/documentation HelpHub articles.', 'wp-docs' ),
+			'public'             => true,
+			'show_in_rest'       => true,
+			'hierarchical'       => false,
+			'has_archive'        => 'wordpress-org-documentation',
+			'menu_icon'          => 'dashicons-media-document',
+			'rewrite'            => array(
+				'slug'       => 'wordpress-org-documentation/article',
+				'with_front' => false,
+			),
+			'supports'           => array( 'title', 'editor', 'excerpt', 'revisions', 'custom-fields' ),
+			'taxonomies'         => array( 'category' ),
+			'delete_with_user'   => false,
+			'publicly_queryable' => true,
+		)
+	);
+
+	register_post_type(
+		'documentation',
+		array(
+			'labels'             => array(
+				'name'          => __( 'WordPress.com Docs', 'wp-docs' ),
+				'singular_name' => __( 'WordPress.com Doc', 'wp-docs' ),
+			),
+			'description'        => __( 'Mirror of developer.wordpress.com documentation posts.', 'wp-docs' ),
+			'public'             => true,
+			'show_in_rest'       => true,
+			'hierarchical'       => true,
+			'has_archive'        => 'developer-wordpress-com-documentation',
+			'menu_icon'          => 'dashicons-book',
+			'rewrite'            => array(
+				'slug'       => 'developer-wordpress-com-documentation',
+				'with_front' => false,
+			),
+			'supports'           => array( 'title', 'editor', 'page-attributes', 'excerpt', 'revisions', 'custom-fields' ),
+			'taxonomies'         => array( 'category', 'post_tag' ),
+			'delete_with_user'   => false,
+			'publicly_queryable' => true,
+		)
+	);
+
+	register_taxonomy_for_object_type( 'category', 'helphub_article' );
+	register_taxonomy_for_object_type( 'category', 'documentation' );
+	register_taxonomy_for_object_type( 'post_tag', 'documentation' );
+}
 
 /**
  * Register dynamic blocks used by block templates.
@@ -179,6 +237,34 @@ function wp_docs_get_root_nav_items(): array {
 		);
 	}
 
+	foreach ( wp_docs_get_docs_post_types() as $post_type ) {
+		$post_type_object = get_post_type_object( $post_type );
+		if ( ! $post_type_object ) {
+			continue;
+		}
+
+		$count = (int) ( new WP_Query(
+			array(
+				'post_type'      => $post_type,
+				'post_status'    => 'publish',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+			)
+		) )->found_posts;
+
+		if ( 0 === $count ) {
+			continue;
+		}
+
+		$slug = wp_docs_get_post_type_root_slug( $post_type );
+		$items[ $slug ] = array(
+			'slug'  => $slug,
+			'label' => $post_type_object->labels->name,
+			'url'   => get_post_type_archive_link( $post_type ) ?: home_url( '/' . $slug . '/' ),
+			'order' => 100 + count( $items ),
+		);
+	}
+
 	usort(
 		$items,
 		static function ( array $a, array $b ): int {
@@ -207,6 +293,21 @@ function wp_docs_get_current_root_slug(): string {
 		}
 	}
 
+	if ( $current_id > 0 ) {
+		$post_type = get_post_type( $current_id );
+		if ( is_string( $post_type ) && in_array( $post_type, wp_docs_get_docs_post_types(), true ) ) {
+			return wp_docs_get_post_type_root_slug( $post_type );
+		}
+	}
+
+	if ( is_post_type_archive() ) {
+		$post_type = get_query_var( 'post_type' );
+		$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
+		if ( is_string( $post_type ) && '' !== $post_type ) {
+			return wp_docs_get_post_type_root_slug( $post_type );
+		}
+	}
+
 	$current_path = isset( $_SERVER['REQUEST_URI'] ) ? wp_parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH ) : '';
 
 	if ( ! is_string( $current_path ) ) {
@@ -216,6 +317,56 @@ function wp_docs_get_current_root_slug(): string {
 	$segments = array_values( array_filter( explode( '/', trim( $current_path, '/' ) ) ) );
 
 	return isset( $segments[0] ) ? sanitize_title( $segments[0] ) : '';
+}
+
+/**
+ * Return public imported documentation post types, without naming sources here.
+ *
+ * @return string[]
+ */
+function wp_docs_get_docs_post_types(): array {
+	$post_types = array();
+
+	foreach ( get_post_types( array( 'public' => true ), 'names' ) as $post_type ) {
+		if ( in_array( $post_type, array( 'post', 'page', 'attachment' ), true ) ) {
+			continue;
+		}
+
+		$has_imports = ( new WP_Query(
+			array(
+				'post_type'      => $post_type,
+				'post_status'    => 'any',
+				'posts_per_page' => 1,
+				'fields'         => 'ids',
+				'meta_query'     => array(
+					array(
+						'key'     => '_wp_docs_import_bucket',
+						'compare' => 'EXISTS',
+					),
+				),
+			)
+		) )->have_posts();
+
+		if ( $has_imports ) {
+			$post_types[] = $post_type;
+		}
+	}
+
+	return $post_types;
+}
+
+/**
+ * Return the stable docs root slug for a post type.
+ */
+function wp_docs_get_post_type_root_slug( string $post_type ): string {
+	$post_type_object = get_post_type_object( $post_type );
+	$archive          = $post_type_object ? $post_type_object->has_archive : '';
+
+	if ( is_string( $archive ) && '' !== $archive ) {
+		return sanitize_title( $archive );
+	}
+
+	return sanitize_title( $post_type );
 }
 
 /**
@@ -331,6 +482,28 @@ function wp_docs_render_docs_shell_block( array $attributes, string $content ): 
  * Render the left docs navigation from WordPress pages or fixture metadata.
  */
 function wp_docs_render_left_navigation(): string {
+	$current_id = (int) get_queried_object_id();
+	if ( $current_id > 0 ) {
+		$post_type = get_post_type( $current_id );
+		if ( is_string( $post_type ) && in_array( $post_type, wp_docs_get_docs_post_types(), true ) ) {
+			$navigation = wp_docs_render_post_type_navigation( $post_type, $current_id );
+			if ( '' !== $navigation ) {
+				return $navigation;
+			}
+		}
+	}
+
+	if ( is_post_type_archive() ) {
+		$post_type = get_query_var( 'post_type' );
+		$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
+		if ( is_string( $post_type ) && in_array( $post_type, wp_docs_get_docs_post_types(), true ) ) {
+			$navigation = wp_docs_render_post_type_navigation( $post_type, 0 );
+			if ( '' !== $navigation ) {
+				return $navigation;
+			}
+		}
+	}
+
 	$pages = get_pages(
 		array(
 			'post_status' => 'publish',
@@ -348,6 +521,220 @@ function wp_docs_render_left_navigation(): string {
 	}
 
 	return wp_docs_render_fixture_navigation();
+}
+
+/**
+ * Render navigation for an imported source post type using its native structure.
+ */
+function wp_docs_render_post_type_navigation( string $post_type, int $current_id ): string {
+	$post_type_object = get_post_type_object( $post_type );
+	if ( ! $post_type_object ) {
+		return '';
+	}
+
+	$root_slug = wp_docs_get_post_type_root_slug( $post_type );
+	$output    = wp_docs_render_root_links( $root_slug );
+
+	if ( is_post_type_hierarchical( $post_type ) ) {
+		$posts = get_posts(
+			array(
+				'post_type'      => $post_type,
+				'post_status'    => 'publish',
+				'posts_per_page' => -1,
+				'orderby'        => array( 'menu_order' => 'ASC', 'title' => 'ASC' ),
+			)
+		);
+
+		return $output . wp_docs_render_hierarchical_post_navigation( $posts, $current_id, $post_type_object->labels->name );
+	}
+
+	$taxonomy = wp_docs_get_primary_hierarchical_taxonomy( $post_type );
+	if ( '' !== $taxonomy ) {
+		return $output . wp_docs_render_taxonomy_post_navigation( $post_type, $taxonomy, $current_id, $post_type_object->labels->name );
+	}
+
+	return $output . wp_docs_render_flat_post_navigation( $post_type, $current_id, $post_type_object->labels->name );
+}
+
+/**
+ * Pick the first hierarchical taxonomy attached to a post type.
+ */
+function wp_docs_get_primary_hierarchical_taxonomy( string $post_type ): string {
+	foreach ( get_object_taxonomies( $post_type, 'objects' ) as $taxonomy ) {
+		if ( $taxonomy->hierarchical && $taxonomy->public ) {
+			return $taxonomy->name;
+		}
+	}
+
+	return '';
+}
+
+/**
+ * Render a post-parent tree for hierarchical post types.
+ *
+ * @param WP_Post[] $posts Posts in the current post type.
+ */
+function wp_docs_render_hierarchical_post_navigation( array $posts, int $current_id, string $root_label ): string {
+	$children     = array();
+	$ancestor_ids = get_post_ancestors( $current_id );
+
+	foreach ( $posts as $post ) {
+		$children[ (int) $post->post_parent ][] = $post;
+	}
+
+	$walker = static function ( int $parent_id ) use ( &$walker, $children, $current_id, $ancestor_ids ): string {
+		if ( empty( $children[ $parent_id ] ) ) {
+			return '';
+		}
+
+		$output = '<ul class="wp-docs-nav__list">';
+		foreach ( $children[ $parent_id ] as $post ) {
+			$is_current  = (int) $post->ID === $current_id;
+			$is_ancestor = in_array( (int) $post->ID, $ancestor_ids, true );
+			$output     .= wp_docs_render_page_nav_item( $post, $walker( (int) $post->ID ), $is_current, $is_ancestor );
+		}
+		$output .= '</ul>';
+
+		return $output;
+	};
+
+	return '<nav class="wp-docs-nav" data-wp-docs-nav><ul class="wp-docs-nav__list"><li class="wp-docs-nav__section"><span class="wp-docs-nav__section-title">' . esc_html( $root_label ) . '</span>' . $walker( 0 ) . '</li></ul></nav>';
+}
+
+/**
+ * Render taxonomy hierarchy with posts grouped under terms for flat post types.
+ */
+function wp_docs_render_taxonomy_post_navigation( string $post_type, string $taxonomy, int $current_id, string $root_label ): string {
+	$terms = get_terms(
+		array(
+			'taxonomy'   => $taxonomy,
+			'hide_empty' => true,
+			'orderby'    => 'name',
+			'order'      => 'ASC',
+		)
+	);
+
+	if ( is_wp_error( $terms ) || empty( $terms ) ) {
+		return wp_docs_render_flat_post_navigation( $post_type, $current_id, $root_label );
+	}
+
+	$terms_by_parent = array();
+	foreach ( $terms as $term ) {
+		$terms_by_parent[ (int) $term->parent ][] = $term;
+	}
+
+	$current_term_ids = wp_get_object_terms( $current_id, $taxonomy, array( 'fields' => 'ids' ) );
+	$current_term_ids = is_wp_error( $current_term_ids ) ? array() : array_map( 'intval', $current_term_ids );
+
+	$term_ancestor_ids = array();
+	foreach ( $current_term_ids as $term_id ) {
+		$term_ancestor_ids = array_merge( $term_ancestor_ids, get_ancestors( $term_id, $taxonomy, 'taxonomy' ) );
+	}
+
+	$walker = static function ( int $parent_id ) use ( &$walker, $terms_by_parent, $taxonomy, $post_type, $current_id, $current_term_ids, $term_ancestor_ids ): string {
+		if ( empty( $terms_by_parent[ $parent_id ] ) ) {
+			return '';
+		}
+
+		$output = '<ul class="wp-docs-nav__list">';
+		foreach ( $terms_by_parent[ $parent_id ] as $term ) {
+			$posts = get_posts(
+				array(
+					'post_type'      => $post_type,
+					'post_status'    => 'publish',
+					'posts_per_page' => -1,
+					'orderby'        => 'title',
+					'order'          => 'ASC',
+					'tax_query'      => array(
+						array(
+							'taxonomy'         => $taxonomy,
+							'terms'            => array( (int) $term->term_id ),
+							'include_children' => false,
+						),
+					),
+				)
+			);
+
+			$child_list = $walker( (int) $term->term_id );
+			if ( ! empty( $posts ) ) {
+				$child_list .= '<ul class="wp-docs-nav__list">';
+				foreach ( $posts as $post ) {
+					$child_list .= wp_docs_render_page_nav_item( $post, '', (int) $post->ID === $current_id, false );
+				}
+				$child_list .= '</ul>';
+			}
+
+			$is_current_term = in_array( (int) $term->term_id, $current_term_ids, true );
+			$is_ancestor     = in_array( (int) $term->term_id, $term_ancestor_ids, true );
+			$output         .= wp_docs_render_term_nav_item( $term, $child_list, $is_current_term, $is_ancestor );
+		}
+		$output .= '</ul>';
+
+		return $output;
+	};
+
+	return '<nav class="wp-docs-nav" data-wp-docs-nav><ul class="wp-docs-nav__list"><li class="wp-docs-nav__section"><span class="wp-docs-nav__section-title">' . esc_html( $root_label ) . '</span>' . $walker( 0 ) . '</li></ul></nav>';
+}
+
+/**
+ * Render flat post navigation when no hierarchy source exists.
+ */
+function wp_docs_render_flat_post_navigation( string $post_type, int $current_id, string $root_label ): string {
+	$posts = get_posts(
+		array(
+			'post_type'      => $post_type,
+			'post_status'    => 'publish',
+			'posts_per_page' => -1,
+			'orderby'        => 'title',
+			'order'          => 'ASC',
+		)
+	);
+
+	$output = '<nav class="wp-docs-nav" data-wp-docs-nav><ul class="wp-docs-nav__list"><li class="wp-docs-nav__section"><span class="wp-docs-nav__section-title">' . esc_html( $root_label ) . '</span><ul class="wp-docs-nav__list">';
+	foreach ( $posts as $post ) {
+		$output .= wp_docs_render_page_nav_item( $post, '', (int) $post->ID === $current_id, false );
+	}
+	$output .= '</ul></li></ul></nav>';
+
+	return $output;
+}
+
+/**
+ * Render a taxonomy term navigation item.
+ */
+function wp_docs_render_term_nav_item( WP_Term $term, string $child_list, bool $is_current, bool $is_ancestor ): string {
+	$has_children = '' !== $child_list;
+	$is_expanded  = $has_children && ( $is_current || $is_ancestor );
+	$classes      = array( 'wp-docs-nav__item', 'wp-docs-nav__item--term' );
+	$children_id  = 'wp-docs-nav-term-children-' . (int) $term->term_id;
+
+	if ( $has_children ) {
+		$classes[] = 'has-children';
+	}
+	if ( $is_current ) {
+		$classes[] = 'is-current';
+	}
+	if ( $is_ancestor ) {
+		$classes[] = 'is-ancestor';
+	}
+
+	$link = sprintf(
+		'<a class="wp-docs-nav__link" href="%1$s">%2$s</a>',
+		esc_url( get_term_link( $term ) ),
+		esc_html( $term->name )
+	);
+
+	if ( $has_children ) {
+		$link      .= sprintf(
+			'<button class="wp-docs-nav__toggle" type="button" aria-expanded="%1$s" aria-controls="%2$s" data-wp-docs-nav-toggle><span class="screen-reader-text">Toggle %3$s</span></button>',
+			$is_expanded ? 'true' : 'false',
+			esc_attr( $children_id ),
+			esc_html( $term->name )
+		);
+		$child_list = preg_replace( '/^<ul class="wp-docs-nav__list">/', '<ul class="wp-docs-nav__list" id="' . esc_attr( $children_id ) . '"' . ( $is_expanded ? '' : ' hidden' ) . '>', $child_list, 1 ) ?? $child_list;
+	}
+
+	return sprintf( '<li class="%1$s"><div class="wp-docs-nav__row">%2$s</div>%3$s</li>', esc_attr( implode( ' ', $classes ) ), $link, $child_list );
 }
 
 /**
