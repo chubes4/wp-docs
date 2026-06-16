@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "source_set": "script-modules-pilot",
+  "generated_at": "2026-06-16T16:38:25Z",
+  "generation_method": "technical-docs-agent-compatible source-backed pilot slice",
+  "generation_limit": "Local docs-agent/WP Codebox runtime generation was not available as a repo command; this slice commits traceable page specs, page metadata, and source maps instead of claiming a full runtime corpus run.",
+  "source_revision": {
+    "repo": "https://github.com/WordPress/wordpress-develop.git",
+    "ref": "refs/heads/trunk",
+    "commit": "58f02a0278b49f35436ecd14a73a9701f1a115ef"
+  },
+  "section": {
+    "slug": "/developer/script-modules/",
+    "title": "Script Modules",
+    "audience": "plugin, theme, and block developers",
+    "nav_label": "Script Modules",
+    "nav_order": 10
+  },
+  "pages": [
+    {
+      "id": "developer-script-modules-overview",
+      "slug": "/developer/script-modules/",
+      "path": "content/developer/script-modules/README.md",
+      "title": "Script Modules",
+      "template": "section-index",
+      "nav_order": 10,
+      "search_weight": 1.0,
+      "required_evidence": ["public-functions", "rendering-lifecycle", "default-modules"]
+    },
+    {
+      "id": "developer-script-modules-getting-started",
+      "slug": "/developer/script-modules/getting-started/",
+      "path": "content/developer/script-modules/getting-started.md",
+      "title": "Getting Started With Script Modules",
+      "template": "guide",
+      "nav_order": 20,
+      "search_weight": 0.9,
+      "required_evidence": ["register-enqueue-api", "version-args", "validation-warnings"]
+    },
+    {
+      "id": "developer-script-modules-dependencies-and-imports",
+      "slug": "/developer/script-modules/dependencies-and-imports/",
+      "path": "content/developer/script-modules/dependencies-and-imports.md",
+      "title": "Dependencies And Imports",
+      "template": "concept",
+      "nav_order": 30,
+      "search_weight": 0.85,
+      "required_evidence": ["dependency-shape", "static-dynamic-imports", "default-modules"]
+    },
+    {
+      "id": "developer-script-modules-loading-rendering-and-data",
+      "slug": "/developer/script-modules/loading-rendering-and-data/",
+      "path": "content/developer/script-modules/loading-rendering-and-data.md",
+      "title": "Loading, Rendering, And Data",
+      "template": "concept",
+      "nav_order": 40,
+      "search_weight": 0.8,
+      "required_evidence": ["hook-placement", "import-map-printing", "module-data", "translations"]
+    },
+    {
+      "id": "developer-script-modules-api",
+      "slug": "/developer/script-modules/api/",
+      "path": "content/developer/script-modules/api.md",
+      "title": "Script Modules API Reference",
+      "template": "reference",
+      "nav_order": 50,
+      "search_weight": 0.95,
+      "required_evidence": ["public-functions", "class-methods"]
+    }
+  ]
+}
