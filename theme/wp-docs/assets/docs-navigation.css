@@ -28,7 +28,54 @@
 .wp-docs-sidebar__header {
 	display: grid;
 	gap: 0.75rem;
-	margin-bottom: 1rem;
+	margin-bottom: 0.85rem;
+}
+
+.wp-docs-root-links {
+	display: grid;
+	gap: 0.45rem;
+	margin-bottom: 1.25rem;
+}
+
+.wp-docs-root-links__link {
+	align-items: center;
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 0.65rem;
+	color: var(--wp--preset--color--ink);
+	display: flex;
+	font-size: 0.86rem;
+	font-weight: 650;
+	justify-content: space-between;
+	line-height: 1.25;
+	padding: 0.6rem 0.7rem;
+	text-decoration: none;
+}
+
+.wp-docs-root-links__link::after {
+	color: var(--wp--preset--color--muted);
+	content: "->";
+	font-size: 0.8rem;
+	margin-left: 0.5rem;
+}
+
+.wp-docs-root-links__link:hover {
+	background: var(--wp--preset--color--surface-alt);
+	color: var(--wp--preset--color--accent);
+}
+
+.wp-docs-root-links__link--commercial {
+	background: #111827;
+	border-color: #111827;
+	color: #ffffff;
+}
+
+.wp-docs-root-links__link--commercial::after {
+	color: rgb(255 255 255 / 72%);
+}
+
+.wp-docs-root-links__link--commercial:hover {
+	background: #1f2937;
+	color: #ffffff;
 }
 
 .wp-docs-sidebar__eyebrow,
@@ -82,6 +129,11 @@
 
 .wp-docs-nav__section + .wp-docs-nav__section {
 	margin-top: 1rem;
+}
+
+.wp-docs-nav__item--root > .wp-docs-nav__link {
+	color: var(--wp--preset--color--ink);
+	font-weight: 700;
 }
 
 .wp-docs-nav__section-title {

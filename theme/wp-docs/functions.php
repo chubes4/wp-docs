@@ -133,8 +133,12 @@ function wp_docs_render_left_navigation(): string {
 		)
 	);
 
-	if ( ! empty( $pages ) ) {
-		return wp_docs_render_page_navigation( $pages );
+	if ( ! empty( $pages ) && is_page() ) {
+		$page_navigation = wp_docs_render_page_navigation( $pages );
+
+		if ( '' !== $page_navigation ) {
+			return $page_navigation;
+		}
 	}
 
 	return wp_docs_render_fixture_navigation();
@@ -147,14 +151,35 @@ function wp_docs_render_left_navigation(): string {
  */
 function wp_docs_render_page_navigation( array $pages ): string {
 	$current_id = (int) get_queried_object_id();
-	$children   = array();
+	$page_ids   = array_map(
+		static function ( WP_Post $page ): int {
+			return (int) $page->ID;
+		},
+		$pages
+	);
+
+	if ( $current_id <= 0 || ! in_array( $current_id, $page_ids, true ) ) {
+		return '';
+	}
+
+	$ancestor_ids = get_post_ancestors( $current_id );
+	$root_id      = ! empty( $ancestor_ids ) ? (int) end( $ancestor_ids ) : $current_id;
+	$root_page    = null;
+	$children     = array();
 
 	foreach ( $pages as $page ) {
+		if ( (int) $page->ID === $root_id ) {
+			$root_page = $page;
+		}
+
 		$children[ (int) $page->post_parent ][] = $page;
 	}
 
-	$ancestor_ids = $current_id > 0 ? get_post_ancestors( $current_id ) : array();
-	$walker       = static function ( int $parent_id ) use ( &$walker, $children, $current_id, $ancestor_ids ): string {
+	if ( ! $root_page instanceof WP_Post ) {
+		return '';
+	}
+
+	$walker = static function ( int $parent_id ) use ( &$walker, $children, $current_id, $ancestor_ids ): string {
 		if ( empty( $children[ $parent_id ] ) ) {
 			return '';
 		}
@@ -187,7 +212,30 @@ function wp_docs_render_page_navigation( array $pages ): string {
 		return $output;
 	};
 
-	return '<nav class="wp-docs-nav" data-wp-docs-nav>' . $walker( 0 ) . '</nav>';
+	$root_children = $walker( $root_id );
+	$root_slug     = (string) get_post_field( 'post_name', $root_page );
+	$is_current    = (int) $root_page->ID === $current_id;
+	$classes       = array( 'wp-docs-nav__item', 'wp-docs-nav__item--root' );
+
+	if ( $is_current ) {
+		$classes[] = 'is-current';
+	} else {
+		$classes[] = 'is-ancestor';
+	}
+
+	$output  = wp_docs_render_root_links( $root_slug );
+	$output .= '<nav class="wp-docs-nav" data-wp-docs-nav>';
+	$output .= '<ul class="wp-docs-nav__list"><li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
+	$output .= sprintf(
+		'<a class="wp-docs-nav__link" href="%1$s"%2$s>%3$s</a>',
+		esc_url( get_permalink( $root_page ) ),
+		$is_current ? ' aria-current="page"' : '',
+		esc_html( get_the_title( $root_page ) )
+	);
+	$output .= $root_children;
+	$output .= '</li></ul></nav>';
+
+	return $output;
 }
 
 /**
@@ -197,8 +245,18 @@ function wp_docs_render_fixture_navigation(): string {
 	$entries = wp_docs_get_fixture_entries();
 
 	if ( empty( $entries ) ) {
-		return '<nav class="wp-docs-nav" data-wp-docs-nav><p class="wp-docs-nav__empty">No docs pages found.</p></nav>';
+		return '<nav class="wp-docs-nav" data-wp-docs-nav><p class="wp-docs-nav__empty">Docs navigation will appear here after pages are imported.</p></nav>';
 	}
+
+	$root_key = wp_docs_get_current_fixture_root( $entries );
+	$entries  = array_values(
+		array_filter(
+			$entries,
+			static function ( array $entry ) use ( $root_key ): bool {
+				return wp_docs_get_entry_root_key( $entry ) === $root_key;
+			}
+		)
+	);
 
 	usort(
 		$entries,
@@ -213,26 +271,192 @@ function wp_docs_render_fixture_navigation(): string {
 		$by_section[ $section ][] = $entry;
 	}
 
-	$output = '<nav class="wp-docs-nav" data-wp-docs-nav><ul class="wp-docs-nav__list">';
+	$output = wp_docs_render_root_links( $root_key );
+	$output .= '<nav class="wp-docs-nav" data-wp-docs-nav><ul class="wp-docs-nav__list">';
 	foreach ( $by_section as $section => $items ) {
 		$output .= '<li class="wp-docs-nav__section"><span class="wp-docs-nav__section-title">' . esc_html( $section ) . '</span><ul class="wp-docs-nav__list">';
-		foreach ( $items as $item ) {
-			$url        = (string) ( $item['url'] ?? '#' );
-			$is_current = wp_docs_is_current_fixture_url( $url );
-
-			$output .= sprintf(
-				'<li class="wp-docs-nav__item%1$s"><a class="wp-docs-nav__link" href="%2$s"%3$s>%4$s</a></li>',
-				$is_current ? ' is-current' : '',
-				esc_url( $url ),
-				$is_current ? ' aria-current="page"' : '',
-				esc_html( (string) ( $item['title'] ?? 'Untitled' ) )
-			);
-		}
+		$output .= wp_docs_render_fixture_tree( $items );
 		$output .= '</ul></li>';
 	}
 	$output .= '</ul></nav>';
 
 	return $output;
+}
+
+/**
+ * Render configured links for a docs root above the navigation tree.
+ */
+function wp_docs_render_root_links( string $root_key ): string {
+	$config = wp_docs_get_root_link_config();
+	$links  = $config[ $root_key ] ?? $config['default'] ?? array();
+
+	if ( empty( $links ) ) {
+		return '';
+	}
+
+	$output = '<div class="wp-docs-root-links" aria-label="Related resources">';
+	foreach ( $links as $link ) {
+		$url   = isset( $link['url'] ) ? (string) $link['url'] : '';
+		$label = isset( $link['label'] ) ? (string) $link['label'] : '';
+
+		if ( '' === $url || '' === $label ) {
+			continue;
+		}
+
+		$type    = isset( $link['type'] ) ? sanitize_html_class( (string) $link['type'] ) : 'resource';
+		$output .= sprintf(
+			'<a class="wp-docs-root-links__link wp-docs-root-links__link--%1$s" href="%2$s">%3$s</a>',
+			$type,
+			esc_url( $url ),
+			esc_html( $label )
+		);
+	}
+	$output .= '</div>';
+
+	return $output;
+}
+
+/**
+ * Central docs-root resource configuration.
+ *
+ * @return array<string,array<int,array{label:string,url:string,type:string}>>
+ */
+function wp_docs_get_root_link_config(): array {
+	$config = array(
+		'default'       => array(
+			array(
+				'label' => 'Build with WordPress.com',
+				'url'   => 'https://wordpress.com/studio/',
+				'type'  => 'commercial',
+			),
+			array(
+				'label' => 'WordPress release notes',
+				'url'   => 'https://wordpress.org/documentation/wordpress-version/version-history/',
+				'type'  => 'open-source',
+			),
+		),
+		'wordpress'     => array(
+			array(
+				'label' => 'Build with WordPress.com',
+				'url'   => 'https://wordpress.com/studio/',
+				'type'  => 'commercial',
+			),
+			array(
+				'label' => 'WordPress release notes',
+				'url'   => 'https://wordpress.org/documentation/wordpress-version/version-history/',
+				'type'  => 'open-source',
+			),
+		),
+		'wordpress-com' => array(
+			array(
+				'label' => 'WordPress.com Studio',
+				'url'   => 'https://wordpress.com/studio/',
+				'type'  => 'commercial',
+			),
+			array(
+				'label' => 'WordPress release notes',
+				'url'   => 'https://wordpress.org/documentation/wordpress-version/version-history/',
+				'type'  => 'open-source',
+			),
+		),
+	);
+
+	/**
+	 * Filters docs-root resource links shown above the sidebar tree.
+	 *
+	 * @param array<string,array<int,array{label:string,url:string,type:string}>> $config Link config keyed by docs root slug.
+	 */
+	$filtered_config = apply_filters( 'wp_docs_root_link_config', $config );
+
+	return is_array( $filtered_config ) ? $filtered_config : $config;
+}
+
+/**
+ * Render nested fixture entries for one section.
+ *
+ * @param array<int,array<string,mixed>> $items Fixture entries.
+ */
+function wp_docs_render_fixture_tree( array $items ): string {
+	$by_parent = array();
+	$ids       = array();
+
+	foreach ( $items as $item ) {
+		$id = isset( $item['id'] ) ? (string) $item['id'] : '';
+
+		if ( '' !== $id ) {
+			$ids[ $id ] = true;
+		}
+	}
+
+	foreach ( $items as $item ) {
+		$parent = isset( $item['parent'] ) ? (string) $item['parent'] : '';
+
+		if ( '' !== $parent && ! isset( $ids[ $parent ] ) ) {
+			$parent = '';
+		}
+
+		$by_parent[ $parent ][] = $item;
+	}
+
+	$walker = static function ( string $parent ) use ( &$walker, $by_parent ): string {
+		if ( empty( $by_parent[ $parent ] ) ) {
+			return '';
+		}
+
+		$output = '' === $parent ? '' : '<ul class="wp-docs-nav__list">';
+		foreach ( $by_parent[ $parent ] as $item ) {
+			$id         = isset( $item['id'] ) ? (string) $item['id'] : '';
+			$url        = (string) ( $item['url'] ?? '#' );
+			$is_current = wp_docs_is_current_fixture_url( $url );
+
+			$output .= sprintf(
+				'<li class="wp-docs-nav__item%1$s"><a class="wp-docs-nav__link" href="%2$s"%3$s>%4$s</a>%5$s</li>',
+				$is_current ? ' is-current' : '',
+				esc_url( $url ),
+				$is_current ? ' aria-current="page"' : '',
+				esc_html( (string) ( $item['title'] ?? 'Untitled' ) ),
+				'' !== $id ? $walker( $id ) : ''
+			);
+		}
+		$output .= '' === $parent ? '' : '</ul>';
+
+		return $output;
+	};
+
+	return $walker( '' );
+}
+
+/**
+ * Determine the fixture root for the current URL.
+ *
+ * @param array<int,array<string,mixed>> $entries Fixture entries.
+ */
+function wp_docs_get_current_fixture_root( array $entries ): string {
+	foreach ( $entries as $entry ) {
+		$url = isset( $entry['url'] ) ? (string) $entry['url'] : '';
+
+		if ( '' !== $url && wp_docs_is_current_fixture_url( $url ) ) {
+			return wp_docs_get_entry_root_key( $entry );
+		}
+	}
+
+	$first = reset( $entries );
+
+	return is_array( $first ) ? wp_docs_get_entry_root_key( $first ) : 'default';
+}
+
+/**
+ * Return the configured root key for a fixture entry.
+ */
+function wp_docs_get_entry_root_key( array $entry ): string {
+	if ( isset( $entry['root'] ) && '' !== (string) $entry['root'] ) {
+		return sanitize_title( (string) $entry['root'] );
+	}
+
+	$url_path = isset( $entry['url'] ) ? wp_parse_url( (string) $entry['url'], PHP_URL_PATH ) : '';
+	$parts    = is_string( $url_path ) ? array_values( array_filter( explode( '/', trim( $url_path, '/' ) ) ) ) : array();
+
+	return ! empty( $parts ) ? sanitize_title( (string) $parts[0] ) : 'default';
 }
 
 /**
