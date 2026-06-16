@@ -1,12 +1,8 @@
 <!-- wp:template-part {"slug":"header","tagName":"header"} /-->
 
-<!-- wp:group {"tagName":"main","align":"full","className":"wp-docs-shell","layout":{"type":"default"}} -->
-<main class="wp-block-group alignfull wp-docs-shell">
-<input class="wp-docs-drawer-toggle" type="checkbox" id="wp-docs-nav-toggle" aria-label="Toggle documentation navigation" />
-<label class="wp-docs-drawer-backdrop" for="wp-docs-nav-toggle" aria-hidden="true"></label>
-<!-- wp:template-part {"slug":"docs-sidebar","tagName":"aside"} /-->
-<!-- wp:group {"tagName":"article","className":"wp-docs-content","layout":{"type":"constrained"}} -->
-<article class="wp-block-group wp-docs-content" id="content">
+<!-- wp:group {"tagName":"main","align":"full","layout":{"type":"default"}} -->
+<main class="wp-block-group alignfull">
+<!-- wp:wp-docs/docs-shell -->
 <!-- wp:post-title {"level":1,"className":"wp-docs-title"} /-->
 <!-- wp:group {"className":"wp-docs-meta","textColor":"muted","fontSize":"small","layout":{"type":"flex","flexWrap":"wrap"}} -->
 <div class="wp-block-group wp-docs-meta has-muted-color has-text-color has-small-font-size">
@@ -22,9 +18,7 @@
 <!-- wp:post-navigation-link {"label":"Next: ","showTitle":true,"className":"wp-docs-prev-next__link"} /-->
 </div>
 <!-- /wp:group -->
-</article>
-<!-- /wp:group -->
-<!-- wp:template-part {"slug":"on-this-page","tagName":"aside"} /-->
+<!-- /wp:wp-docs/docs-shell -->
 </main>
 <!-- /wp:group -->
 

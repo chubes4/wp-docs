@@ -1,0 +1,60 @@
+{
+  "metadataShape": {
+    "id": "stable page id or slug",
+    "title": "display title",
+    "url": "runtime URL or committed content path",
+    "section": "top-level docs section label",
+    "sectionOrder": "numeric section ordering",
+    "order": "numeric page ordering within section",
+    "parent": "optional parent id for nested IA",
+    "excerpt": "short result summary",
+    "headings": "array of visible headings",
+    "body": "plain-text searchable content"
+  },
+  "entries": [
+    {
+      "id": "project-direction",
+      "title": "Project Direction",
+      "url": "/docs/project-direction.md",
+      "section": "Project",
+      "sectionOrder": 10,
+      "order": 10,
+      "excerpt": "The target structure and product direction for generated WordPress documentation.",
+      "headings": ["Goal", "Information architecture", "Publishing surface"],
+      "body": "WP Docs is an experiment for generating comprehensive WordPress core and canonical plugin documentation. Navigation search examples and information architecture are first class product work."
+    },
+    {
+      "id": "full-coverage-generation-plan",
+      "title": "Full Coverage Generation Plan",
+      "url": "/docs/full-coverage-generation-plan.md",
+      "section": "Generation",
+      "sectionOrder": 20,
+      "order": 10,
+      "excerpt": "Plan for generating source-verified user, developer, reference, and internals documentation.",
+      "headings": ["Coverage goals", "Source inventory", "Review workflow"],
+      "body": "Generate from public WordPress source and documentation sources. Preserve provenance in page metadata and review ledgers. Keep generated drafts reproducible and disposable."
+    },
+    {
+      "id": "user-docs-generation-plan",
+      "title": "User Docs Generation Plan",
+      "url": "/docs/user-docs-generation-plan.md",
+      "section": "Generation",
+      "sectionOrder": 20,
+      "order": 20,
+      "excerpt": "User-facing documentation generation plan and review expectations.",
+      "headings": ["Audience", "Content lanes", "Quality bar"],
+      "body": "User documentation should be accurate source verified and pleasant to navigate. The corpus separates user facing docs developer docs reference material and internals."
+    },
+    {
+      "id": "script-modules-pilot",
+      "title": "Script Modules Pilot Recipe",
+      "url": "/recipes/script-modules-pilot.md",
+      "section": "Recipes",
+      "sectionOrder": 30,
+      "order": 10,
+      "excerpt": "WP Codebox recipe for reproducible Script Modules API documentation generation and review.",
+      "headings": ["Recipe", "Inputs", "Outputs"],
+      "body": "The current pilot output target is developer script modules documentation for the WordPress Core Script Modules API. Recipes provide reproducible generation and review runs."
+    }
+  ]
+}

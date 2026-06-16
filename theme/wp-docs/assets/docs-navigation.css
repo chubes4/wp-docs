@@ -1,0 +1,255 @@
+.wp-docs-shell {
+	display: grid;
+	grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr) minmax(10rem, 15rem);
+	gap: var(--wp--preset--spacing--50);
+	margin-inline: auto;
+	max-width: var(--wp--style--global--wide-size);
+	padding-inline: var(--wp--preset--spacing--40);
+}
+
+.wp-docs-sidebar,
+.wp-docs-toc {
+	align-self: start;
+	max-height: calc(100vh - 2rem);
+	overflow: auto;
+	position: sticky;
+	top: 1rem;
+}
+
+.wp-docs-sidebar__header {
+	display: grid;
+	gap: 0.75rem;
+	margin-bottom: 1rem;
+}
+
+.wp-docs-sidebar__eyebrow,
+.wp-docs-nav__section-title,
+.wp-docs-search__section,
+.wp-docs-toc__title {
+	color: var(--wp--preset--color--muted);
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+.wp-docs-search-button {
+	align-items: center;
+	background: var(--wp--preset--color--surface-alt);
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 0.65rem;
+	color: var(--wp--preset--color--muted);
+	cursor: pointer;
+	display: flex;
+	font: inherit;
+	justify-content: space-between;
+	padding: 0.65rem 0.75rem;
+	text-align: left;
+	width: 100%;
+}
+
+.wp-docs-search-button kbd,
+.wp-docs-search__bar button {
+	background: #ffffff;
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 0.4rem;
+	color: var(--wp--preset--color--muted);
+	font: 600 0.75rem/1 var(--wp--preset--font-family--mono);
+	padding: 0.2rem 0.35rem;
+}
+
+.wp-docs-nav__list,
+.wp-docs-toc__list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.wp-docs-nav__list .wp-docs-nav__list {
+	border-left: 1px solid var(--wp--preset--color--border);
+	margin: 0.15rem 0 0.4rem 0.55rem;
+	padding-left: 0.65rem;
+}
+
+.wp-docs-nav__section + .wp-docs-nav__section {
+	margin-top: 1rem;
+}
+
+.wp-docs-nav__section-title {
+	display: block;
+	margin-bottom: 0.35rem;
+}
+
+.wp-docs-nav__link,
+.wp-docs-toc__item a {
+	border-radius: 0.5rem;
+	color: var(--wp--preset--color--muted);
+	display: block;
+	font-size: 0.9rem;
+	line-height: 1.35;
+	padding: 0.35rem 0.5rem;
+	text-decoration: none;
+}
+
+.wp-docs-nav__link:hover,
+.wp-docs-toc__item a:hover {
+	background: var(--wp--preset--color--surface-alt);
+	color: var(--wp--preset--color--ink);
+}
+
+.wp-docs-nav__item.is-current > .wp-docs-nav__link,
+.wp-docs-nav__item.is-ancestor > .wp-docs-nav__link {
+	background: #eef2ff;
+	color: var(--wp--preset--color--accent);
+	font-weight: 650;
+}
+
+.wp-docs-content {
+	min-width: 0;
+}
+
+.wp-docs-content > :first-child {
+	margin-top: 0;
+}
+
+.wp-docs-content h2,
+.wp-docs-content h3,
+.wp-docs-content h4 {
+	scroll-margin-top: 2rem;
+}
+
+.wp-docs-heading-anchor {
+	color: var(--wp--preset--color--muted);
+	font-size: 0.8em;
+	margin-left: 0.45rem;
+	opacity: 0;
+	text-decoration: none;
+}
+
+.wp-docs-content h2:hover .wp-docs-heading-anchor,
+.wp-docs-content h3:hover .wp-docs-heading-anchor,
+.wp-docs-content h4:hover .wp-docs-heading-anchor,
+.wp-docs-heading-anchor:focus {
+	opacity: 1;
+}
+
+.wp-docs-toc__item--h3 {
+	padding-left: 0.75rem;
+}
+
+.wp-docs-toc__item--h4 {
+	padding-left: 1.5rem;
+}
+
+.wp-docs-toc__empty,
+.wp-docs-nav__empty {
+	color: var(--wp--preset--color--muted);
+	font-size: 0.9rem;
+}
+
+.wp-docs-search[hidden] {
+	display: none;
+}
+
+.wp-docs-search__backdrop {
+	background: rgba(17, 24, 39, 0.46);
+	inset: 0;
+	position: fixed;
+	z-index: 9998;
+}
+
+.wp-docs-search__dialog {
+	background: var(--wp--preset--color--surface);
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 1rem;
+	box-shadow: 0 24px 70px rgba(17, 24, 39, 0.24);
+	left: 50%;
+	max-height: min(42rem, calc(100vh - 3rem));
+	overflow: hidden;
+	position: fixed;
+	top: 6rem;
+	transform: translateX(-50%);
+	width: min(42rem, calc(100vw - 2rem));
+	z-index: 9999;
+}
+
+.wp-docs-search__bar {
+	align-items: center;
+	border-bottom: 1px solid var(--wp--preset--color--border);
+	display: flex;
+	gap: 0.75rem;
+	padding: 0.75rem;
+}
+
+.wp-docs-search__bar input {
+	border: 0;
+	font: inherit;
+	font-size: 1rem;
+	outline: 0;
+	width: 100%;
+}
+
+.wp-docs-search__bar button {
+	cursor: pointer;
+}
+
+.wp-docs-search__results {
+	max-height: 31rem;
+	overflow: auto;
+	padding: 0.5rem;
+}
+
+.wp-docs-search__section {
+	padding: 0.75rem 0.65rem 0.35rem;
+}
+
+.wp-docs-search__result {
+	border-radius: 0.7rem;
+	color: var(--wp--preset--color--ink);
+	display: grid;
+	gap: 0.2rem;
+	padding: 0.7rem;
+	text-decoration: none;
+}
+
+.wp-docs-search__result[aria-selected="true"],
+.wp-docs-search__result:hover {
+	background: var(--wp--preset--color--surface-alt);
+}
+
+.wp-docs-search__result-title {
+	font-weight: 650;
+}
+
+.wp-docs-search__result-excerpt,
+.wp-docs-search__empty {
+	color: var(--wp--preset--color--muted);
+	font-size: 0.9rem;
+}
+
+.wp-docs-search__empty {
+	margin: 0;
+	padding: 1rem;
+}
+
+.has-wp-docs-search-open {
+	overflow: hidden;
+}
+
+@media (max-width: 980px) {
+	.wp-docs-shell {
+		grid-template-columns: 1fr;
+		padding-inline: var(--wp--preset--spacing--30);
+	}
+
+	.wp-docs-sidebar,
+	.wp-docs-toc {
+		max-height: none;
+		position: static;
+	}
+
+	.wp-docs-toc {
+		border-top: 1px solid var(--wp--preset--color--border);
+		padding-top: var(--wp--preset--spacing--30);
+	}
+}
