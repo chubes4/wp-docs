@@ -382,6 +382,147 @@ a {
 	color: var(--wp--preset--color--ink);
 }
 
+.wp-docs-home--bullpen {
+	padding: clamp(2.5rem, 8vw, 6rem) var(--wp-docs-gutter);
+}
+
+.wp-docs-bullpen {
+	max-width: 840px;
+	margin: 0 auto;
+}
+
+.wp-docs-bullpen__eyebrow {
+	color: var(--wp-docs-accent-text);
+	font-size: 0.78rem;
+	font-weight: 750;
+	letter-spacing: 0.12em;
+	margin: 0 0 0.9rem;
+	text-transform: uppercase;
+}
+
+.wp-docs-bullpen__title {
+	font-size: clamp(2.1rem, 5vw, 4rem);
+	letter-spacing: -0.055em;
+	line-height: 1;
+	margin: 0 0 1.2rem;
+}
+
+.wp-docs-bullpen__intro {
+	color: var(--wp--preset--color--muted);
+	font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+	line-height: 1.7;
+	margin: 0 0 1.5rem;
+}
+
+.wp-docs-root-badges {
+	display: flex;
+	gap: 0.75rem;
+	margin: 0 0 1.5rem;
+}
+
+.wp-docs-root-badge {
+	margin: 0;
+}
+
+.wp-docs-root-badge a {
+	display: inline-flex;
+	align-items: center;
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: 999px;
+	background: var(--wp-docs-surface-raised);
+	color: var(--wp--preset--color--ink);
+	font-size: 0.95rem;
+	font-weight: 650;
+	line-height: 1.2;
+	padding: 0.65rem 0.9rem;
+	text-decoration: none;
+}
+
+.wp-docs-root-badge a:hover,
+.wp-docs-root-badge a:focus-visible {
+	border-color: var(--wp-docs-accent-border);
+	background: var(--wp-docs-accent-soft);
+	color: var(--wp--preset--color--accent);
+}
+
+.wp-docs-bullpen__note {
+	border-top: 1px solid var(--wp--preset--color--border);
+	color: var(--wp--preset--color--muted);
+	font-size: 0.95rem;
+	line-height: 1.65;
+	margin: 0;
+	padding-top: 1.25rem;
+}
+
+.wp-docs-archive-header {
+	border-bottom: 1px solid var(--wp--preset--color--border);
+	margin-bottom: 2rem;
+	padding-bottom: 1.5rem;
+}
+
+.wp-docs-archive-header__eyebrow {
+	color: var(--wp-docs-accent-text);
+	font-size: 0.78rem;
+	font-weight: 750;
+	letter-spacing: 0.12em;
+	margin: 0 0 0.75rem;
+	text-transform: uppercase;
+}
+
+.wp-docs-archive-header__title {
+	margin-bottom: 1rem;
+}
+
+.wp-docs-archive-header__intro {
+	color: var(--wp--preset--color--muted);
+	font-size: clamp(1rem, 1.5vw, 1.15rem);
+	line-height: 1.7;
+	max-width: 760px;
+}
+
+.wp-docs-archive-list {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.wp-docs-archive-card {
+	background: var(--wp-docs-surface-glass);
+	border: 1px solid var(--wp--preset--color--border);
+	border-radius: var(--wp-docs-radius-lg);
+	box-shadow: var(--wp-docs-shadow-sm);
+	padding: 1rem 1.1rem;
+}
+
+.wp-docs-archive-card__title {
+	font-size: clamp(1.1rem, 2vw, 1.35rem);
+	letter-spacing: -0.025em;
+	line-height: 1.2;
+	margin: 0 0 0.45rem;
+}
+
+.wp-docs-archive-card__title a {
+	color: var(--wp--preset--color--ink);
+	text-decoration: none;
+}
+
+.wp-docs-archive-card__title a:hover,
+.wp-docs-archive-card__title a:focus-visible {
+	color: var(--wp--preset--color--accent);
+}
+
+.wp-docs-archive-card__excerpt {
+	color: var(--wp--preset--color--muted);
+	font-size: 0.95rem;
+	line-height: 1.6;
+	margin: 0;
+}
+
+.wp-docs-archive-pagination {
+	border-top: 1px solid var(--wp--preset--color--border);
+	margin-top: 2rem;
+	padding-top: 1rem;
+}
+
 .wp-docs-content {
 	width: 100%;
 	min-width: 0;
