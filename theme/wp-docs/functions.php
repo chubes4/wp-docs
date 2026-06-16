@@ -79,7 +79,7 @@ function wp_docs_render_docs_shell_block( array $attributes, string $content ): 
 
 	ob_start();
 	?>
-	<div class="wp-docs-shell" data-wp-docs-shell>
+	<div class="wp-docs-shell has-no-wp-docs-toc" data-wp-docs-shell>
 		<aside class="wp-docs-sidebar" aria-label="Docs navigation" data-wp-docs-sidebar>
 			<div class="wp-docs-sidebar__mobile-header">
 				<strong>Docs</strong>
@@ -98,10 +98,9 @@ function wp_docs_render_docs_shell_block( array $attributes, string $content ): 
 			<?php echo $content; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 		</article>
 
-		<aside class="wp-docs-toc" aria-label="On this page" data-wp-docs-toc>
+		<aside class="wp-docs-toc" aria-label="On this page" data-wp-docs-toc hidden>
 			<p class="wp-docs-toc__title">On this page</p>
-			<nav data-wp-docs-toc-list></nav>
-			<p class="wp-docs-toc__empty" data-wp-docs-toc-empty>No sections yet.</p>
+			<nav aria-label="Page sections" data-wp-docs-toc-list></nav>
 		</aside>
 	</div>
 

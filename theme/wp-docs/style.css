@@ -15,6 +15,7 @@ Text Domain: wp-docs
 :root {
 	--wp-docs-header-height: 64px;
 	--wp-docs-max-width: 1440px;
+	--wp-docs-content-width: 768px;
 	--wp-docs-sidebar-width: 280px;
 	--wp-docs-toc-width: 224px;
 	--wp-docs-gutter: clamp(1rem, 2vw, 2rem);
@@ -137,21 +138,30 @@ body {
 
 .wp-docs-shell {
 	display: grid;
-	grid-template-columns: minmax(220px, var(--wp-docs-sidebar-width)) minmax(0, 1fr) minmax(180px, var(--wp-docs-toc-width));
+	grid-template-columns: minmax(220px, var(--wp-docs-sidebar-width)) minmax(0, var(--wp-docs-content-width)) minmax(176px, var(--wp-docs-toc-width));
 	gap: var(--wp-docs-gutter);
+	justify-content: center;
 	width: min(100%, var(--wp-docs-max-width));
 	margin: 0 auto;
 	padding: 0 var(--wp-docs-gutter);
 }
 
+.wp-docs-shell.has-no-wp-docs-toc {
+	grid-template-columns: minmax(220px, var(--wp-docs-sidebar-width)) minmax(0, var(--wp-docs-content-width));
+}
+
 .wp-docs-sidebar,
 .wp-docs-toc {
 	position: sticky;
-	top: var(--wp-docs-header-height);
-	height: calc(100vh - var(--wp-docs-header-height));
+	top: calc(var(--wp-docs-header-height) + 1rem);
+	height: calc(100vh - var(--wp-docs-header-height) - 2rem);
 	margin: 0;
 	padding: 1.5rem 0;
 	overflow: auto;
+}
+
+.wp-docs-toc[hidden] {
+	display: none;
 }
 
 .wp-docs-sidebar {
@@ -207,7 +217,7 @@ body {
 
 .wp-docs-content {
 	width: 100%;
-	max-width: 800px;
+	max-width: var(--wp-docs-content-width);
 	min-width: 0;
 	padding: clamp(2rem, 5vw, 4.75rem) 0 4rem;
 }
@@ -320,8 +330,17 @@ body {
 }
 
 .wp-docs-toc a {
+	border-radius: 0.45rem;
 	color: var(--wp--preset--color--muted);
+	display: block;
+	padding: 0.25rem 0.45rem;
 	text-decoration: none;
+}
+
+.wp-docs-toc a.is-active {
+	background: #eef2ff;
+	color: var(--wp--preset--color--accent);
+	font-weight: 650;
 }
 
 .wp-docs-prev-next {
@@ -342,6 +361,10 @@ body {
 
 @media (max-width: 1180px) {
 	.wp-docs-shell {
+		grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+	}
+
+	.wp-docs-shell.has-no-wp-docs-toc {
 		grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
 	}
 
@@ -381,6 +404,7 @@ body {
 
 	.wp-docs-shell {
 		display: block;
+		justify-content: stretch;
 		width: 100%;
 		padding: 0 1rem;
 	}

@@ -1,19 +1,28 @@
 .wp-docs-shell {
 	display: grid;
-	grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr) minmax(10rem, 15rem);
-	gap: var(--wp--preset--spacing--50);
+	grid-template-columns: minmax(13.75rem, 17.5rem) minmax(0, 48rem) minmax(11rem, 14rem);
+	gap: clamp(1.5rem, 3vw, 3rem);
+	justify-content: center;
 	margin-inline: auto;
-	max-width: var(--wp--style--global--wide-size);
+	max-width: var(--wp-docs-max-width, var(--wp--style--global--wide-size));
 	padding-inline: var(--wp--preset--spacing--40);
+}
+
+.wp-docs-shell.has-no-wp-docs-toc {
+	grid-template-columns: minmax(13.75rem, 17.5rem) minmax(0, 48rem);
 }
 
 .wp-docs-sidebar,
 .wp-docs-toc {
 	align-self: start;
-	max-height: calc(100vh - 2rem);
+	max-height: calc(100vh - var(--wp-docs-header-height, 64px) - 2rem);
 	overflow: auto;
 	position: sticky;
-	top: 1rem;
+	top: calc(var(--wp-docs-header-height, 64px) + 1rem);
+}
+
+.wp-docs-toc[hidden] {
+	display: none;
 }
 
 .wp-docs-sidebar__header {
@@ -82,12 +91,12 @@
 
 .wp-docs-nav__link,
 .wp-docs-toc__item a {
-	border-radius: 0.5rem;
+	border-radius: 0.45rem;
 	color: var(--wp--preset--color--muted);
 	display: block;
 	font-size: 0.9rem;
 	line-height: 1.35;
-	padding: 0.35rem 0.5rem;
+	padding: 0.35rem 0.55rem;
 	text-decoration: none;
 }
 
@@ -98,13 +107,15 @@
 }
 
 .wp-docs-nav__item.is-current > .wp-docs-nav__link,
-.wp-docs-nav__item.is-ancestor > .wp-docs-nav__link {
+.wp-docs-nav__item.is-ancestor > .wp-docs-nav__link,
+.wp-docs-toc__item a.is-active {
 	background: #eef2ff;
 	color: var(--wp--preset--color--accent);
 	font-weight: 650;
 }
 
 .wp-docs-content {
+	inline-size: min(100%, 48rem);
 	min-width: 0;
 }
 
@@ -134,14 +145,13 @@
 }
 
 .wp-docs-toc__item--h3 {
-	padding-left: 0.75rem;
+	padding-left: 0.6rem;
 }
 
 .wp-docs-toc__item--h4 {
-	padding-left: 1.5rem;
+	padding-left: 1.2rem;
 }
 
-.wp-docs-toc__empty,
 .wp-docs-nav__empty {
 	color: var(--wp--preset--color--muted);
 	font-size: 0.9rem;
@@ -239,7 +249,12 @@
 @media (max-width: 980px) {
 	.wp-docs-shell {
 		grid-template-columns: 1fr;
+		justify-content: stretch;
 		padding-inline: var(--wp--preset--spacing--30);
+	}
+
+	.wp-docs-shell.has-no-wp-docs-toc {
+		grid-template-columns: 1fr;
 	}
 
 	.wp-docs-sidebar,

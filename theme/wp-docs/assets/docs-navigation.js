@@ -15,21 +15,90 @@
 			.replace( /^-|-$/g, '' );
 	}
 
-	function buildToc() {
-		const content = document.querySelector( '[data-wp-docs-content]' );
-		const toc = document.querySelector( '[data-wp-docs-toc-list]' );
+	function getHeadingText( heading ) {
+		const clone = heading.cloneNode( true );
+		clone.querySelectorAll( '.wp-docs-heading-anchor' ).forEach( ( anchor ) => anchor.remove() );
 
-		if ( ! content || ! toc ) {
+		return clone.textContent.trim();
+	}
+
+	function setActiveTocLink( links, activeId ) {
+		links.forEach( ( link ) => {
+			const isActive = link.dataset.wpDocsTocLink === activeId;
+			link.classList.toggle( 'is-active', isActive );
+			if ( isActive ) {
+				link.setAttribute( 'aria-current', 'location' );
+			} else {
+				link.removeAttribute( 'aria-current' );
+			}
+		} );
+	}
+
+	function bindActiveToc( headings, links ) {
+		if ( headings.length === 0 || links.length === 0 ) {
 			return;
 		}
 
-		const empty = document.querySelector( '[data-wp-docs-toc-empty]' );
-		const headings = Array.from( content.querySelectorAll( 'h2, h3, h4' ) ).filter( ( heading ) => heading.textContent.trim() );
+		let ticking = false;
+		const getOffset = () => {
+			const headerHeight = parseFloat( getComputedStyle( document.documentElement ).getPropertyValue( '--wp-docs-header-height' ) ) || 64;
+
+			return headerHeight + 32;
+		};
+
+		const update = () => {
+			const offset = getOffset();
+			const hashId = window.location.hash ? window.location.hash.slice( 1 ) : '';
+			let active = headings[ 0 ].id;
+
+			if ( hashId && headings.some( ( heading ) => heading.id === hashId ) ) {
+				active = hashId;
+			}
+
+			headings.forEach( ( heading ) => {
+				if ( heading.getBoundingClientRect().top <= offset ) {
+					active = heading.id;
+				}
+			} );
+
+			setActiveTocLink( links, active );
+			ticking = false;
+		};
+
+		const requestUpdate = () => {
+			if ( ticking ) {
+				return;
+			}
+
+			ticking = true;
+			window.requestAnimationFrame( update );
+		};
+
+		update();
+		window.addEventListener( 'scroll', requestUpdate, { passive: true } );
+		window.addEventListener( 'resize', requestUpdate );
+		window.addEventListener( 'hashchange', requestUpdate );
+	}
+
+	function buildToc() {
+		const shell = document.querySelector( '[data-wp-docs-shell]' );
+		const content = document.querySelector( '[data-wp-docs-content]' );
+		const tocContainer = document.querySelector( '[data-wp-docs-toc]' );
+		const toc = document.querySelector( '[data-wp-docs-toc-list]' );
+
+		if ( ! content || ! toc || ! tocContainer ) {
+			return;
+		}
+
+		const headings = Array.from( content.querySelectorAll( 'h2, h3, h4' ) ).filter( ( heading ) => getHeadingText( heading ) );
 		const usedIds = new Set();
 
 		toc.innerHTML = '';
-		if ( empty ) {
-			empty.hidden = headings.length > 0;
+		tocContainer.hidden = headings.length === 0;
+
+		if ( shell ) {
+			shell.classList.toggle( 'has-wp-docs-toc', headings.length > 0 );
+			shell.classList.toggle( 'has-no-wp-docs-toc', headings.length === 0 );
 		}
 
 		if ( headings.length === 0 ) {
@@ -39,8 +108,10 @@
 		const list = document.createElement( 'ol' );
 		list.className = 'wp-docs-toc__list';
 
+		const links = [];
+
 		headings.forEach( ( heading ) => {
-			const headingText = heading.textContent.trim();
+			const headingText = getHeadingText( heading );
 			const baseId = heading.id || slugify( headingText ) || 'section';
 			let id = baseId;
 			let index = 2;
@@ -68,12 +139,15 @@
 			const link = document.createElement( 'a' );
 			link.href = `#${ id }`;
 			link.textContent = headingText;
+			link.dataset.wpDocsTocLink = id;
 
 			item.appendChild( link );
 			list.appendChild( item );
+			links.push( link );
 		} );
 
 		toc.appendChild( list );
+		bindActiveToc( headings, links );
 	}
 
 	function normalize( value ) {
