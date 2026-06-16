@@ -44,24 +44,22 @@ function wp_docs_render_header_block( array $attributes ): string {
 
 	ob_start();
 	?>
-	<header class="wp-docs-header" role="banner">
-		<div class="wp-docs-header__inner">
-			<div class="wp-docs-header__brand">
-				<button class="wp-docs-mobile-menu-button" type="button" data-wp-docs-sidebar-toggle aria-expanded="false" aria-controls="wp-docs-sidebar">Menu</button>
-				<a class="wp-docs-brand-link" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-					<span class="wp-docs-wordpress-mark" aria-hidden="true"><?php echo wp_docs_get_wordpress_logo_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
-					<span class="wp-docs-brand-title"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></span>
-				</a>
-			</div>
-
-			<?php echo wp_docs_render_root_nav_block( array() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-
-			<div class="wp-docs-header__actions">
-				<a class="wp-docs-header-button" href="#search" data-wp-docs-search-open>Search</a>
-				<a class="wp-docs-header-link" href="https://github.com/chubes4/wp-docs">GitHub</a>
-			</div>
+	<div class="wp-docs-header__inner">
+		<div class="wp-docs-header__brand">
+			<button class="wp-docs-mobile-menu-button" type="button" data-wp-docs-sidebar-toggle aria-expanded="false" aria-controls="wp-docs-sidebar">Menu</button>
+			<a class="wp-docs-brand-link" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+				<span class="wp-docs-wordpress-mark" aria-hidden="true"><?php echo wp_docs_get_wordpress_logo_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+				<span class="wp-docs-brand-title"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></span>
+			</a>
 		</div>
-	</header>
+
+		<?php echo wp_docs_render_root_nav_block( array() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+		<div class="wp-docs-header__actions">
+			<a class="wp-docs-header-button" href="#search" data-wp-docs-search-open>Search</a>
+			<a class="wp-docs-header-link" href="https://github.com/chubes4/wp-docs">GitHub</a>
+		</div>
+	</div>
 	<?php
 
 	return (string) ob_get_clean();
@@ -227,9 +225,16 @@ function wp_docs_enqueue_assets(): void {
 	$theme_version = wp_get_theme()->get( 'Version' );
 
 	wp_enqueue_style(
+		'wp-docs-style',
+		get_stylesheet_uri(),
+		array(),
+		$theme_version
+	);
+
+	wp_enqueue_style(
 		'wp-docs-navigation',
 		get_theme_file_uri( 'assets/docs-navigation.css' ),
-		array(),
+		array( 'wp-docs-style' ),
 		$theme_version
 	);
 
