@@ -13,6 +13,13 @@ add_action( 'wp_enqueue_scripts', 'wp_docs_enqueue_assets' );
  */
 function wp_docs_register_dynamic_blocks(): void {
 	register_block_type(
+		'wp-docs/header',
+		array(
+			'render_callback' => 'wp_docs_render_header_block',
+		)
+	);
+
+	register_block_type(
 		'wp-docs/root-nav',
 		array(
 			'render_callback' => 'wp_docs_render_root_nav_block',
@@ -25,6 +32,46 @@ function wp_docs_register_dynamic_blocks(): void {
 			'render_callback' => 'wp_docs_render_docs_shell_block',
 		)
 	);
+}
+
+/**
+ * Render the site header without block layout wrappers.
+ *
+ * @param array $attributes Block attributes.
+ */
+function wp_docs_render_header_block( array $attributes ): string {
+	unset( $attributes );
+
+	ob_start();
+	?>
+	<header class="wp-docs-header" role="banner">
+		<div class="wp-docs-header__inner">
+			<div class="wp-docs-header__brand">
+				<button class="wp-docs-mobile-menu-button" type="button" data-wp-docs-sidebar-toggle aria-expanded="false" aria-controls="wp-docs-sidebar">Menu</button>
+				<a class="wp-docs-brand-link" href="<?php echo esc_url( home_url( '/' ) ); ?>" rel="home" aria-label="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+					<span class="wp-docs-wordpress-mark" aria-hidden="true"><?php echo wp_docs_get_wordpress_logo_svg(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></span>
+					<span class="wp-docs-brand-title"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></span>
+				</a>
+			</div>
+
+			<?php echo wp_docs_render_root_nav_block( array() ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+
+			<div class="wp-docs-header__actions">
+				<a class="wp-docs-header-button" href="#search" data-wp-docs-search-open>Search</a>
+				<a class="wp-docs-header-link" href="https://github.com/chubes4/wp-docs">GitHub</a>
+			</div>
+		</div>
+	</header>
+	<?php
+
+	return (string) ob_get_clean();
+}
+
+/**
+ * Return the WordPress logo SVG used in the header.
+ */
+function wp_docs_get_wordpress_logo_svg(): string {
+	return '<svg viewBox="0 0 28 28" focusable="false" aria-hidden="true"><path d="M20.3643 24.8789L24.2153 13.7636C24.9351 11.9678 25.1745 10.5322 25.1745 9.25543C25.1745 8.79189 25.1439 8.36182 25.0895 7.96094C26.0738 9.75362 26.634 11.8109 26.634 13.9995C26.634 18.6429 24.113 22.6975 20.3643 24.8789ZM15.7627 8.09923C16.5218 8.05945 17.2058 7.97972 17.2058 7.97972C17.8851 7.89965 17.8052 6.90274 17.1255 6.94252C17.1255 6.94252 15.0832 7.1025 13.7647 7.1025C12.5255 7.1025 10.4436 6.94252 10.4436 6.94252C9.76376 6.90274 9.68406 7.9396 10.3639 7.97972C10.3639 7.97972 11.007 8.05945 11.6862 8.09923L13.6506 13.4723L10.8906 21.7332L6.29941 8.09923C7.05915 8.05945 7.74227 7.97972 7.74227 7.97972C8.42163 7.89965 8.34125 6.90274 7.66172 6.94252C7.66172 6.94252 5.6197 7.1025 4.30118 7.1025C4.06481 7.1025 3.78584 7.09652 3.48927 7.08713C5.74422 3.67045 9.61958 1.41406 14.0248 1.41406C17.3075 1.41406 20.2966 2.66689 22.5397 4.71874C22.4857 4.71533 22.4323 4.7085 22.3766 4.7085C21.1377 4.7085 20.2589 5.78548 20.2589 6.94252C20.2589 7.97972 20.8584 8.85711 21.4976 9.89465C21.977 10.7329 22.537 11.8097 22.537 13.3656C22.537 14.4435 22.217 15.7991 21.5776 17.435L20.3197 21.6297L15.7627 8.09923ZM14.0257 26.5886C12.7881 26.5886 11.5934 26.4069 10.4637 26.0759L14.2474 15.1016L18.1229 25.7013C18.1484 25.7631 18.1796 25.8201 18.2133 25.8746C16.9026 26.3347 15.4943 26.5886 14.0257 26.5886ZM1.41309 13.9976C1.41309 12.1727 1.80528 10.4401 2.50517 8.875L8.51986 25.3255C4.31303 23.2856 1.41309 18.9801 1.41309 13.9976ZM14.0245 0C6.2916 0 0 6.28002 0 13.9993C0 21.7193 6.2916 28 14.0245 28C21.7576 28 28.0494 21.7193 28.0494 13.9993C28.0494 6.28002 21.7576 0 14.0245 0Z" fill="currentColor" /></svg>';
 }
 
 /**
