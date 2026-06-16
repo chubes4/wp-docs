@@ -316,8 +316,8 @@ function wp_docs_render_page_navigation( array $pages ): string {
 		return '';
 	}
 
-	$ancestor_ids = get_post_ancestors( $current_id );
-	$root_id      = ! empty( $ancestor_ids ) ? (int) end( $ancestor_ids ) : $current_id;
+	$ancestor_ids  = get_post_ancestors( $current_id );
+	$root_id       = ! empty( $ancestor_ids ) ? (int) end( $ancestor_ids ) : $current_id;
 	$root_page     = null;
 	$children      = array();
 	$pages_by_slug = array();
@@ -327,7 +327,7 @@ function wp_docs_render_page_navigation( array $pages ): string {
 			$root_page = $page;
 		}
 
-		$children[ (int) $page->post_parent ][] = $page;
+		$children[ (int) $page->post_parent ][]        = $page;
 		$pages_by_slug[ (string) $page->post_name ] = $page;
 	}
 
@@ -364,8 +364,8 @@ function wp_docs_render_page_navigation( array $pages ): string {
 		return $output;
 	};
 
-	$root_children   = $walker( $root_id );
-	$is_current      = (int) $root_page->ID === $current_id;
+	$root_children = $walker( $root_id );
+	$is_current    = (int) $root_page->ID === $current_id;
 
 	$output  = wp_docs_render_root_links( $root_slug );
 	$output .= '<nav class="wp-docs-nav" data-wp-docs-nav>';
@@ -397,7 +397,7 @@ function wp_docs_render_page_nav_item( WP_Post $page, string $child_list, bool $
 		$classes[] = 'is-ancestor';
 	}
 
-	$link = sprintf(
+	$link  = sprintf(
 		'<a class="wp-docs-nav__link" href="%1$s"%2$s>%3$s</a>',
 		esc_url( get_permalink( $page ) ),
 		$is_current ? ' aria-current="page"' : '',
@@ -493,57 +493,57 @@ function wp_docs_nav_contains_current_page( $children, array $pages_by_slug, int
  */
 function wp_docs_get_wpcom_navigation_tree(): array {
 	return array(
-		'developer-wordpress-com-glance'            => array(
+		'developer-wordpress-com-glance' => array(
 			'developer-wordpress-com-wordpress-and-wordpress-com' => array(),
-			'developer-wordpress-com-tech-stack'                  => array(),
-			'developer-wordpress-com-glossary'                    => array(),
-			'developer-wordpress-com-interface-styles'            => array(),
-			'developer-wordpress-com-support'                     => array(),
+			'developer-wordpress-com-tech-stack' => array(),
+			'developer-wordpress-com-glossary' => array(),
+			'developer-wordpress-com-interface-styles' => array(),
+			'developer-wordpress-com-support' => array(),
 		),
-		'developer-wordpress-com-get-started'       => array(
-			'developer-wordpress-com-create-site'             => array(),
+		'developer-wordpress-com-get-started' => array(
+			'developer-wordpress-com-create-site' => array(),
 			'developer-wordpress-com-local-environment-setup' => array(),
-			'developer-wordpress-com-github'                  => array(),
-			'developer-wordpress-com-develop-locally'         => array(),
-			'developer-wordpress-com-deploy'                  => array(),
+			'developer-wordpress-com-github' => array(),
+			'developer-wordpress-com-develop-locally' => array(),
+			'developer-wordpress-com-deploy' => array(),
 		),
-		'developer-wordpress-com-studio'            => array(
-			'developer-wordpress-com-sites'                         => array(),
-			'developer-wordpress-com-cli'                           => array(),
-			'developer-wordpress-com-studio-code'                   => array(),
+		'developer-wordpress-com-studio' => array(
+			'developer-wordpress-com-sites' => array(),
+			'developer-wordpress-com-cli' => array(),
+			'developer-wordpress-com-studio-code' => array(),
 			'developer-wordpress-com-agent-skills-wordpress-studio' => array(),
-			'developer-wordpress-com-mcp-on-studio'                 => array(),
-			'developer-wordpress-com-blueprints'                    => array(
+			'developer-wordpress-com-mcp-on-studio' => array(),
+			'developer-wordpress-com-blueprints' => array(
 				'developer-wordpress-com-open-in-wordpress-studio-button' => array(),
 				'developer-wordpress-com-how-to-create-custom-blueprints' => array(),
 			),
-			'developer-wordpress-com-preview-sites'                  => array(),
-			'developer-wordpress-com-sync'                           => array(),
-			'developer-wordpress-com-assistant'                      => array(),
-			'developer-wordpress-com-import-export'                  => array(),
-			'developer-wordpress-com-ssl-in-studio'                  => array(),
-			'developer-wordpress-com-debugging'                      => array(
+			'developer-wordpress-com-preview-sites' => array(),
+			'developer-wordpress-com-sync' => array(),
+			'developer-wordpress-com-assistant' => array(),
+			'developer-wordpress-com-import-export' => array(),
+			'developer-wordpress-com-ssl-in-studio' => array(),
+			'developer-wordpress-com-debugging' => array(
 				'developer-wordpress-com-xdebug' => array(),
 			),
-			'developer-wordpress-com-frequently-asked-questions'     => array(),
-			'developer-wordpress-com-changelog'                      => array(),
-			'developer-wordpress-com-roadmap'                        => array(
+			'developer-wordpress-com-frequently-asked-questions' => array(),
+			'developer-wordpress-com-changelog' => array(),
+			'developer-wordpress-com-roadmap' => array(
 				'developer-wordpress-com-beta-features' => array(),
 			),
 		),
-		'developer-wordpress-com-agent-skills'      => array(),
-		'developer-wordpress-com-mcp'               => array(
-			'developer-wordpress-com-tools-reference'            => array(),
-			'developer-wordpress-com-connect-custom-mcp-client'  => array(),
+		'developer-wordpress-com-agent-skills' => array(),
+		'developer-wordpress-com-mcp' => array(
+			'developer-wordpress-com-tools-reference' => array(),
+			'developer-wordpress-com-connect-custom-mcp-client' => array(),
 		),
-		'developer-wordpress-com-developer-tools'   => array(
-			'developer-wordpress-com-wp-cli'               => array(
-				'developer-wordpress-com-overview'          => array(),
+		'developer-wordpress-com-developer-tools' => array(
+			'developer-wordpress-com-wp-cli' => array(
+				'developer-wordpress-com-overview' => array(),
 				'developer-wordpress-com-platform-commands' => array(),
-				'developer-wordpress-com-common-commands'   => array(),
-				'developer-wordpress-com-troubleshooting'   => array(),
+				'developer-wordpress-com-common-commands' => array(),
+				'developer-wordpress-com-troubleshooting' => array(),
 			),
-			'developer-wordpress-com-api'                  => array(
+			'developer-wordpress-com-api' => array(
 				'developer-wordpress-com-getting-started' => array(),
 				'developer-wordpress-com-rest-api-reference' => array(),
 				'developer-wordpress-com-namespaces-versions' => array(),
@@ -555,26 +555,26 @@ function wp_docs_get_wpcom_navigation_tree(): array {
 			'developer-wordpress-com-site-accelerator-api' => array(),
 		),
 		'developer-wordpress-com-platform-features' => array(
-			'developer-wordpress-com-site-performance'           => array(),
-			'developer-wordpress-com-domain-management'          => array(),
-			'developer-wordpress-com-user-management'            => array(),
-			'developer-wordpress-com-real-time-backup-restore'   => array(),
-			'developer-wordpress-com-storage'                    => array(),
-			'developer-wordpress-com-sitemaps'                   => array(),
-			'developer-wordpress-com-jetpack-scan'               => array(),
-			'developer-wordpress-com-account-security'           => array(),
+			'developer-wordpress-com-site-performance' => array(),
+			'developer-wordpress-com-domain-management' => array(),
+			'developer-wordpress-com-user-management' => array(),
+			'developer-wordpress-com-real-time-backup-restore' => array(),
+			'developer-wordpress-com-storage' => array(),
+			'developer-wordpress-com-sitemaps' => array(),
+			'developer-wordpress-com-jetpack-scan' => array(),
+			'developer-wordpress-com-account-security' => array(),
 		),
-		'developer-wordpress-com-guides'            => array(
-			'developer-wordpress-com-add-http-headers'             => array(),
-			'developer-wordpress-com-block-patterns'               => array(),
-			'developer-wordpress-com-manage-permissions'           => array(),
-			'developer-wordpress-com-manually-restore-backup'      => array(),
-			'developer-wordpress-com-symlinked-files-folders'      => array(),
-			'developer-wordpress-com-oembed-provider-api'          => array(),
-			'developer-wordpress-com-wp-cron-on-wordpress-com'     => array(),
+		'developer-wordpress-com-guides' => array(
+			'developer-wordpress-com-add-http-headers' => array(),
+			'developer-wordpress-com-block-patterns' => array(),
+			'developer-wordpress-com-manage-permissions' => array(),
+			'developer-wordpress-com-manually-restore-backup' => array(),
+			'developer-wordpress-com-symlinked-files-folders' => array(),
+			'developer-wordpress-com-oembed-provider-api' => array(),
+			'developer-wordpress-com-wp-cron-on-wordpress-com' => array(),
 		),
 		'developer-wordpress-com-troubleshooting-2' => array(
-			'developer-wordpress-com-wp-debug'             => array(),
+			'developer-wordpress-com-wp-debug' => array(),
 			'developer-wordpress-com-jetpack-activity-log' => array(),
 		),
 	);

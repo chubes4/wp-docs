@@ -139,7 +139,7 @@
 	margin-top: 1rem;
 }
 
-.wp-docs-nav__item--root > .wp-docs-nav__link {
+.wp-docs-nav__item--root > .wp-docs-nav__row > .wp-docs-nav__link {
 	color: var(--wp--preset--color--ink);
 	font-weight: 700;
 }
@@ -208,8 +208,13 @@
 	color: var(--wp--preset--color--ink);
 }
 
-.wp-docs-nav__item.is-current > .wp-docs-nav__link,
-.wp-docs-nav__item.is-ancestor > .wp-docs-nav__link,
+.wp-docs-nav__row:hover .wp-docs-nav__link {
+	background: var(--wp-docs-accent-soft);
+	color: var(--wp--preset--color--ink);
+}
+
+.wp-docs-nav__item.is-current > .wp-docs-nav__row > .wp-docs-nav__link,
+.wp-docs-nav__item.is-ancestor > .wp-docs-nav__row > .wp-docs-nav__link,
 .wp-docs-toc__item a.is-active {
 	background: var(--wp-docs-accent-soft);
 	box-shadow: inset 0 0 0 1px var(--wp-docs-accent-border);
