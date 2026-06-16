@@ -378,9 +378,27 @@
 		} );
 	}
 
+	function bindNavTree() {
+		document.querySelectorAll( '[data-wp-docs-nav-toggle]' ).forEach( ( toggle ) => {
+			toggle.addEventListener( 'click', () => {
+				const controls = toggle.getAttribute( 'aria-controls' );
+				const list = controls ? document.getElementById( controls ) : null;
+
+				if ( ! list ) {
+					return;
+				}
+
+				const isOpen = toggle.getAttribute( 'aria-expanded' ) === 'true';
+				toggle.setAttribute( 'aria-expanded', String( ! isOpen ) );
+				list.hidden = isOpen;
+			} );
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		buildToc();
 		bindSearch();
 		bindSidebarToggle();
+		bindNavTree();
 	} );
 }() );

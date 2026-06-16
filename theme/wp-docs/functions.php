@@ -318,8 +318,9 @@ function wp_docs_render_page_navigation( array $pages ): string {
 
 	$ancestor_ids = get_post_ancestors( $current_id );
 	$root_id      = ! empty( $ancestor_ids ) ? (int) end( $ancestor_ids ) : $current_id;
-	$root_page    = null;
-	$children     = array();
+	$root_page     = null;
+	$children      = array();
+	$pages_by_slug = array();
 
 	foreach ( $pages as $page ) {
 		if ( (int) $page->ID === $root_id ) {
@@ -327,10 +328,22 @@ function wp_docs_render_page_navigation( array $pages ): string {
 		}
 
 		$children[ (int) $page->post_parent ][] = $page;
+		$pages_by_slug[ (string) $page->post_name ] = $page;
 	}
 
 	if ( ! $root_page instanceof WP_Post ) {
 		return '';
+	}
+
+	$root_slug_field = get_post_field( 'post_name', $root_page );
+	$root_slug       = is_string( $root_slug_field ) ? $root_slug_field : '';
+
+	if ( 'developer-wordpress-com-documentation' === $root_slug ) {
+		$wpcom_navigation = wp_docs_render_wpcom_page_navigation( $root_page, $pages_by_slug, $current_id, $ancestor_ids );
+
+		if ( '' !== $wpcom_navigation ) {
+			return wp_docs_render_root_links( $root_slug ) . $wpcom_navigation;
+		}
 	}
 
 	$walker = static function ( int $parent_id ) use ( &$walker, $children, $current_id, $ancestor_ids ): string {
@@ -342,24 +355,9 @@ function wp_docs_render_page_navigation( array $pages ): string {
 		foreach ( $children[ $parent_id ] as $page ) {
 			$is_current  = (int) $page->ID === $current_id;
 			$is_ancestor = in_array( (int) $page->ID, $ancestor_ids, true );
-			$classes     = array( 'wp-docs-nav__item' );
+			$child_list  = $walker( (int) $page->ID );
 
-			if ( $is_current ) {
-				$classes[] = 'is-current';
-			}
-
-			if ( $is_ancestor ) {
-				$classes[] = 'is-ancestor';
-			}
-
-			$output .= sprintf(
-				'<li class="%1$s"><a class="wp-docs-nav__link" href="%2$s"%3$s>%4$s</a>%5$s</li>',
-				esc_attr( implode( ' ', $classes ) ),
-				esc_url( get_permalink( $page ) ),
-				$is_current ? ' aria-current="page"' : '',
-				esc_html( get_the_title( $page ) ),
-				$walker( (int) $page->ID )
-			);
+			$output .= wp_docs_render_page_nav_item( $page, $child_list, $is_current, $is_ancestor );
 		}
 
 		$output .= '</ul>';
@@ -367,30 +365,219 @@ function wp_docs_render_page_navigation( array $pages ): string {
 	};
 
 	$root_children   = $walker( $root_id );
-	$root_slug_field = get_post_field( 'post_name', $root_page );
-	$root_slug       = is_string( $root_slug_field ) ? $root_slug_field : '';
 	$is_current      = (int) $root_page->ID === $current_id;
-	$classes         = array( 'wp-docs-nav__item', 'wp-docs-nav__item--root' );
-
-	if ( $is_current ) {
-		$classes[] = 'is-current';
-	} else {
-		$classes[] = 'is-ancestor';
-	}
 
 	$output  = wp_docs_render_root_links( $root_slug );
 	$output .= '<nav class="wp-docs-nav" data-wp-docs-nav>';
-	$output .= '<ul class="wp-docs-nav__list"><li class="' . esc_attr( implode( ' ', $classes ) ) . '">';
-	$output .= sprintf(
-		'<a class="wp-docs-nav__link" href="%1$s"%2$s>%3$s</a>',
-		esc_url( get_permalink( $root_page ) ),
-		$is_current ? ' aria-current="page"' : '',
-		esc_html( get_the_title( $root_page ) )
-	);
-	$output .= $root_children;
-	$output .= '</li></ul></nav>';
+	$output .= '<ul class="wp-docs-nav__list">';
+	$output .= wp_docs_render_page_nav_item( $root_page, $root_children, $is_current, ! $is_current );
+	$output .= '</ul></nav>';
 
 	return $output;
+}
+
+/**
+ * Render one page navigation item with an optional disclosure control.
+ */
+function wp_docs_render_page_nav_item( WP_Post $page, string $child_list, bool $is_current, bool $is_ancestor ): string {
+	$has_children = '' !== $child_list;
+	$is_expanded  = $has_children && ( $is_current || $is_ancestor );
+	$classes      = array( 'wp-docs-nav__item' );
+	$children_id  = 'wp-docs-nav-children-' . (int) $page->ID;
+
+	if ( $has_children ) {
+		$classes[] = 'has-children';
+	}
+
+	if ( $is_current ) {
+		$classes[] = 'is-current';
+	}
+
+	if ( $is_ancestor ) {
+		$classes[] = 'is-ancestor';
+	}
+
+	$link = sprintf(
+		'<a class="wp-docs-nav__link" href="%1$s"%2$s>%3$s</a>',
+		esc_url( get_permalink( $page ) ),
+		$is_current ? ' aria-current="page"' : '',
+		esc_html( get_the_title( $page ) )
+	);
+
+	if ( $has_children ) {
+		$link .= sprintf(
+			'<button class="wp-docs-nav__toggle" type="button" aria-expanded="%1$s" aria-controls="%2$s" data-wp-docs-nav-toggle><span class="screen-reader-text">Toggle %3$s</span></button>',
+			$is_expanded ? 'true' : 'false',
+			esc_attr( $children_id ),
+			esc_html( get_the_title( $page ) )
+		);
+		$child_list = preg_replace( '/^<ul class="wp-docs-nav__list">/', '<ul class="wp-docs-nav__list" id="' . esc_attr( $children_id ) . '"' . ( $is_expanded ? '' : ' hidden' ) . '>', $child_list, 1 ) ?? $child_list;
+	}
+
+	return sprintf(
+		'<li class="%1$s"><div class="wp-docs-nav__row">%2$s</div>%3$s</li>',
+		esc_attr( implode( ' ', $classes ) ),
+		$link,
+		$child_list
+	);
+}
+
+/**
+ * Render the WordPress.com docs sidebar in the same order as the live docs site.
+ *
+ * @param array<string,WP_Post> $pages_by_slug Imported pages keyed by slug.
+ * @param int[]                 $ancestor_ids  Current page ancestors.
+ */
+function wp_docs_render_wpcom_page_navigation( WP_Post $root_page, array $pages_by_slug, int $current_id, array $ancestor_ids ): string {
+	$tree = wp_docs_get_wpcom_navigation_tree();
+
+	$render_nodes = static function ( array $nodes ) use ( &$render_nodes, $pages_by_slug, $current_id, $ancestor_ids ): string {
+		$items = '';
+
+		foreach ( $nodes as $slug => $children ) {
+			if ( ! isset( $pages_by_slug[ $slug ] ) ) {
+				continue;
+			}
+
+			$page        = $pages_by_slug[ $slug ];
+			$child_list  = is_array( $children ) && ! empty( $children ) ? $render_nodes( $children ) : '';
+			$is_current  = (int) $page->ID === $current_id;
+			$is_ancestor = in_array( (int) $page->ID, $ancestor_ids, true ) || wp_docs_nav_contains_current_page( $children, $pages_by_slug, $current_id );
+
+			$items .= wp_docs_render_page_nav_item( $page, $child_list, $is_current, $is_ancestor );
+		}
+
+		if ( '' === $items ) {
+			return '';
+		}
+
+		return '<ul class="wp-docs-nav__list">' . $items . '</ul>';
+	};
+
+	$is_current = (int) $root_page->ID === $current_id;
+	$output     = '<nav class="wp-docs-nav" data-wp-docs-nav><ul class="wp-docs-nav__list">';
+	$output    .= wp_docs_render_page_nav_item( $root_page, $render_nodes( $tree ), $is_current, ! $is_current );
+	$output    .= '</ul></nav>';
+
+	return $output;
+}
+
+/**
+ * Determine whether a configured nav branch contains the current page.
+ *
+ * @param array<string,mixed>|mixed $children Child branch config.
+ * @param array<string,WP_Post>     $pages_by_slug Imported pages keyed by slug.
+ */
+function wp_docs_nav_contains_current_page( $children, array $pages_by_slug, int $current_id ): bool {
+	if ( ! is_array( $children ) ) {
+		return false;
+	}
+
+	foreach ( $children as $slug => $grandchildren ) {
+		if ( isset( $pages_by_slug[ $slug ] ) && (int) $pages_by_slug[ $slug ]->ID === $current_id ) {
+			return true;
+		}
+
+		if ( wp_docs_nav_contains_current_page( $grandchildren, $pages_by_slug, $current_id ) ) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Return live WordPress.com developer docs menu order keyed by imported slugs.
+ *
+ * @return array<string,mixed>
+ */
+function wp_docs_get_wpcom_navigation_tree(): array {
+	return array(
+		'developer-wordpress-com-glance'            => array(
+			'developer-wordpress-com-wordpress-and-wordpress-com' => array(),
+			'developer-wordpress-com-tech-stack'                  => array(),
+			'developer-wordpress-com-glossary'                    => array(),
+			'developer-wordpress-com-interface-styles'            => array(),
+			'developer-wordpress-com-support'                     => array(),
+		),
+		'developer-wordpress-com-get-started'       => array(
+			'developer-wordpress-com-create-site'             => array(),
+			'developer-wordpress-com-local-environment-setup' => array(),
+			'developer-wordpress-com-github'                  => array(),
+			'developer-wordpress-com-develop-locally'         => array(),
+			'developer-wordpress-com-deploy'                  => array(),
+		),
+		'developer-wordpress-com-studio'            => array(
+			'developer-wordpress-com-sites'                         => array(),
+			'developer-wordpress-com-cli'                           => array(),
+			'developer-wordpress-com-studio-code'                   => array(),
+			'developer-wordpress-com-agent-skills-wordpress-studio' => array(),
+			'developer-wordpress-com-mcp-on-studio'                 => array(),
+			'developer-wordpress-com-blueprints'                    => array(
+				'developer-wordpress-com-open-in-wordpress-studio-button' => array(),
+				'developer-wordpress-com-how-to-create-custom-blueprints' => array(),
+			),
+			'developer-wordpress-com-preview-sites'                  => array(),
+			'developer-wordpress-com-sync'                           => array(),
+			'developer-wordpress-com-assistant'                      => array(),
+			'developer-wordpress-com-import-export'                  => array(),
+			'developer-wordpress-com-ssl-in-studio'                  => array(),
+			'developer-wordpress-com-debugging'                      => array(
+				'developer-wordpress-com-xdebug' => array(),
+			),
+			'developer-wordpress-com-frequently-asked-questions'     => array(),
+			'developer-wordpress-com-changelog'                      => array(),
+			'developer-wordpress-com-roadmap'                        => array(
+				'developer-wordpress-com-beta-features' => array(),
+			),
+		),
+		'developer-wordpress-com-agent-skills'      => array(),
+		'developer-wordpress-com-mcp'               => array(
+			'developer-wordpress-com-tools-reference'            => array(),
+			'developer-wordpress-com-connect-custom-mcp-client'  => array(),
+		),
+		'developer-wordpress-com-developer-tools'   => array(
+			'developer-wordpress-com-wp-cli'               => array(
+				'developer-wordpress-com-overview'          => array(),
+				'developer-wordpress-com-platform-commands' => array(),
+				'developer-wordpress-com-common-commands'   => array(),
+				'developer-wordpress-com-troubleshooting'   => array(),
+			),
+			'developer-wordpress-com-api'                  => array(
+				'developer-wordpress-com-getting-started' => array(),
+				'developer-wordpress-com-rest-api-reference' => array(),
+				'developer-wordpress-com-namespaces-versions' => array(),
+				'developer-wordpress-com-oauth2' => array(),
+				'developer-wordpress-com-wpcc' => array(),
+				'developer-wordpress-com-rest-api-javascript' => array(),
+				'developer-wordpress-com-guidelines-for-responsible-use-of-automattics-apis' => array(),
+			),
+			'developer-wordpress-com-site-accelerator-api' => array(),
+		),
+		'developer-wordpress-com-platform-features' => array(
+			'developer-wordpress-com-site-performance'           => array(),
+			'developer-wordpress-com-domain-management'          => array(),
+			'developer-wordpress-com-user-management'            => array(),
+			'developer-wordpress-com-real-time-backup-restore'   => array(),
+			'developer-wordpress-com-storage'                    => array(),
+			'developer-wordpress-com-sitemaps'                   => array(),
+			'developer-wordpress-com-jetpack-scan'               => array(),
+			'developer-wordpress-com-account-security'           => array(),
+		),
+		'developer-wordpress-com-guides'            => array(
+			'developer-wordpress-com-add-http-headers'             => array(),
+			'developer-wordpress-com-block-patterns'               => array(),
+			'developer-wordpress-com-manage-permissions'           => array(),
+			'developer-wordpress-com-manually-restore-backup'      => array(),
+			'developer-wordpress-com-symlinked-files-folders'      => array(),
+			'developer-wordpress-com-oembed-provider-api'          => array(),
+			'developer-wordpress-com-wp-cron-on-wordpress-com'     => array(),
+		),
+		'developer-wordpress-com-troubleshooting-2' => array(
+			'developer-wordpress-com-wp-debug'             => array(),
+			'developer-wordpress-com-jetpack-activity-log' => array(),
+		),
+	);
 }
 
 /**
