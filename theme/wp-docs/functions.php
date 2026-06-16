@@ -327,7 +327,7 @@ function wp_docs_render_page_navigation( array $pages ): string {
 			$root_page = $page;
 		}
 
-		$children[ (int) $page->post_parent ][]        = $page;
+		$children[ (int) $page->post_parent ][]     = $page;
 		$pages_by_slug[ (string) $page->post_name ] = $page;
 	}
 
@@ -397,7 +397,7 @@ function wp_docs_render_page_nav_item( WP_Post $page, string $child_list, bool $
 		$classes[] = 'is-ancestor';
 	}
 
-	$link  = sprintf(
+	$link = sprintf(
 		'<a class="wp-docs-nav__link" href="%1$s"%2$s>%3$s</a>',
 		esc_url( get_permalink( $page ) ),
 		$is_current ? ' aria-current="page"' : '',
@@ -405,7 +405,7 @@ function wp_docs_render_page_nav_item( WP_Post $page, string $child_list, bool $
 	);
 
 	if ( $has_children ) {
-		$link .= sprintf(
+		$link      .= sprintf(
 			'<button class="wp-docs-nav__toggle" type="button" aria-expanded="%1$s" aria-controls="%2$s" data-wp-docs-nav-toggle><span class="screen-reader-text">Toggle %3$s</span></button>',
 			$is_expanded ? 'true' : 'false',
 			esc_attr( $children_id ),
@@ -492,6 +492,7 @@ function wp_docs_nav_contains_current_page( $children, array $pages_by_slug, int
  * @return array<string,mixed>
  */
 function wp_docs_get_wpcom_navigation_tree(): array {
+	// phpcs:disable WordPress.Arrays.MultipleStatementAlignment -- Preserve the live menu order map without column churn.
 	return array(
 		'developer-wordpress-com-glance' => array(
 			'developer-wordpress-com-wordpress-and-wordpress-com' => array(),
@@ -578,6 +579,7 @@ function wp_docs_get_wpcom_navigation_tree(): array {
 			'developer-wordpress-com-jetpack-activity-log' => array(),
 		),
 	);
+	// phpcs:enable WordPress.Arrays.MultipleStatementAlignment
 }
 
 /**
