@@ -155,8 +155,7 @@ a {
 	min-width: 0;
 }
 
-.wp-docs-root-nav__list,
-.wp-docs-root-nav__panel {
+.wp-docs-root-nav__list {
 	align-items: center;
 	display: flex;
 	gap: 0.15rem;
@@ -188,41 +187,6 @@ a {
 .wp-docs-root-nav__item.is-current > .wp-docs-root-nav__link {
 	background: var(--wp--preset--color--surface-alt);
 	color: var(--wp--preset--color--ink);
-}
-
-.wp-docs-root-nav__mobile {
-	display: none;
-	position: relative;
-}
-
-.wp-docs-root-nav__mobile summary {
-	align-items: center;
-	border: 1px solid var(--wp--preset--color--border);
-	border-radius: 999px;
-	color: var(--wp--preset--color--ink);
-	cursor: pointer;
-	display: inline-flex;
-	font-size: 0.875rem;
-	font-weight: 650;
-	line-height: 1;
-	min-height: 2.25rem;
-	padding: 0 0.8rem;
-}
-
-.wp-docs-root-nav__panel {
-	align-items: stretch;
-	background: var(--wp--preset--color--surface);
-	border: 1px solid var(--wp--preset--color--border);
-	border-radius: 0.9rem;
-	box-shadow: 0 20px 60px rgb(15 23 42 / 16%);
-	display: grid;
-	gap: 0.2rem;
-	left: 0;
-	min-width: min(18rem, calc(100vw - 2rem));
-	padding: 0.5rem;
-	position: absolute;
-	top: calc(100% + 0.5rem);
-	z-index: 90;
 }
 
 .wp-docs-source-link {
@@ -548,14 +512,10 @@ a {
 		padding: 0 1rem;
 	}
 
-	.wp-docs-root-nav__list,
+	.wp-docs-root-nav,
 	.wp-docs-source-link,
 	.wp-docs-header-learn {
 		display: none;
-	}
-
-	.wp-docs-root-nav__mobile {
-		display: inline-block;
 	}
 
 	.wp-docs-mobile-menu-button {

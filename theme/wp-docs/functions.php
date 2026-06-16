@@ -56,7 +56,7 @@ function wp_docs_render_root_nav_block( array $attributes ): string {
 	}
 
 	return sprintf(
-		'<nav class="wp-docs-root-nav" aria-label="Documentation roots"><ul class="wp-docs-root-nav__list">%1$s</ul><details class="wp-docs-root-nav__mobile"><summary>Docs</summary><ul class="wp-docs-root-nav__panel">%1$s</ul></details></nav>',
+		'<nav class="wp-docs-root-nav" aria-label="Documentation roots"><ul class="wp-docs-root-nav__list">%1$s</ul></nav>',
 		$list
 	);
 }
@@ -64,8 +64,8 @@ function wp_docs_render_root_nav_block( array $attributes ): string {
 /**
  * Return top-level docs roots for the product nav.
  *
- * Known roots keep a stable display order, then any additional published top-level
- * pages are appended so newly imported docs roots appear without template edits.
+ * Known roots keep a stable display order when matching pages exist, then any
+ * additional published top-level pages are appended without template edits.
  *
  * @return array<int,array{slug:string,label:string,url:string,order:int}>
  */
@@ -107,15 +107,6 @@ function wp_docs_get_root_nav_items(): array {
 			(int) get_option( 'wp_page_for_privacy_policy' ),
 		)
 	);
-
-	foreach ( $known_roots as $slug => $root ) {
-		$items[ $slug ] = array(
-			'slug'  => $slug,
-			'label' => $root['label'],
-			'url'   => home_url( '/' . $slug . '/' ),
-			'order' => $root['order'],
-		);
-	}
 
 	$pages = get_pages(
 		array(
