@@ -80,7 +80,7 @@
 				setTimeout( () => {
 					button.textContent = 'Copy';
 				}, 1800 );
-			} catch ( error ) {
+			} catch {
 				button.textContent = 'Select code';
 			}
 		} );

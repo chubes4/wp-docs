@@ -18,12 +18,12 @@
 	function buildToc() {
 		const content = document.querySelector( '[data-wp-docs-content]' );
 		const toc = document.querySelector( '[data-wp-docs-toc-list]' );
-		const empty = document.querySelector( '[data-wp-docs-toc-empty]' );
 
 		if ( ! content || ! toc ) {
 			return;
 		}
 
+		const empty = document.querySelector( '[data-wp-docs-toc-empty]' );
 		const headings = Array.from( content.querySelectorAll( 'h2, h3, h4' ) ).filter( ( heading ) => heading.textContent.trim() );
 		const usedIds = new Set();
 

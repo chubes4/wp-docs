@@ -210,7 +210,7 @@ function wp_docs_render_fixture_navigation(): string {
 
 	$by_section = array();
 	foreach ( $entries as $entry ) {
-		$section                = (string) ( $entry['section'] ?? 'Docs' );
+		$section                  = (string) ( $entry['section'] ?? 'Docs' );
 		$by_section[ $section ][] = $entry;
 	}
 
@@ -297,7 +297,7 @@ function wp_docs_get_fixture_entries(): array {
 		return array();
 	}
 
-	$decoded = json_decode( (string) file_get_contents( $path ), true );
+	$decoded = json_decode( (string) file_get_contents( $path ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Local theme fixture file.
 
 	if ( ! is_array( $decoded ) || ! isset( $decoded['entries'] ) || ! is_array( $decoded['entries'] ) ) {
 		return array();
