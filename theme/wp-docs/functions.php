@@ -5,19 +5,177 @@
  * @package WPDocs
  */
 
-add_action( 'init', 'wp_docs_register_docs_shell_block' );
+add_action( 'init', 'wp_docs_register_dynamic_blocks' );
 add_action( 'wp_enqueue_scripts', 'wp_docs_enqueue_assets' );
 
 /**
- * Register the dynamic docs shell used by block templates.
+ * Register dynamic blocks used by block templates.
  */
-function wp_docs_register_docs_shell_block(): void {
+function wp_docs_register_dynamic_blocks(): void {
+	register_block_type(
+		'wp-docs/root-nav',
+		array(
+			'render_callback' => 'wp_docs_render_root_nav_block',
+		)
+	);
+
 	register_block_type(
 		'wp-docs/docs-shell',
 		array(
 			'render_callback' => 'wp_docs_render_docs_shell_block',
 		)
 	);
+}
+
+/**
+ * Render the product/root navigation used by the top header.
+ *
+ * @param array $attributes Block attributes.
+ */
+function wp_docs_render_root_nav_block( array $attributes ): string {
+	unset( $attributes );
+
+	$items = wp_docs_get_root_nav_items();
+
+	if ( empty( $items ) ) {
+		return '';
+	}
+
+	$current_root = wp_docs_get_current_root_slug();
+	$list         = '';
+
+	foreach ( $items as $item ) {
+		$is_current = $current_root && $current_root === $item['slug'];
+		$list      .= sprintf(
+			'<li class="wp-docs-root-nav__item%1$s"><a class="wp-docs-root-nav__link" href="%2$s"%3$s>%4$s</a></li>',
+			$is_current ? ' is-current' : '',
+			esc_url( $item['url'] ),
+			$is_current ? ' aria-current="page"' : '',
+			esc_html( $item['label'] )
+		);
+	}
+
+	return sprintf(
+		'<nav class="wp-docs-root-nav" aria-label="Documentation roots"><ul class="wp-docs-root-nav__list">%1$s</ul><details class="wp-docs-root-nav__mobile"><summary>Docs</summary><ul class="wp-docs-root-nav__panel">%1$s</ul></details></nav>',
+		$list
+	);
+}
+
+/**
+ * Return top-level docs roots for the product nav.
+ *
+ * Known roots keep a stable display order, then any additional published top-level
+ * pages are appended so newly imported docs roots appear without template edits.
+ *
+ * @return array<int,array{slug:string,label:string,url:string,order:int}>
+ */
+function wp_docs_get_root_nav_items(): array {
+	$known_roots = array(
+		'wordpress-org' => array(
+			'label' => 'WordPress.org',
+			'order' => 10,
+		),
+		'wordpress-com' => array(
+			'label' => 'WordPress.com',
+			'order' => 20,
+		),
+		'woocommerce'   => array(
+			'label' => 'WooCommerce',
+			'order' => 30,
+		),
+		'jetpack'       => array(
+			'label' => 'Jetpack',
+			'order' => 40,
+		),
+		'studio'        => array(
+			'label' => 'Studio',
+			'order' => 50,
+		),
+		'playground'    => array(
+			'label' => 'Playground',
+			'order' => 60,
+		),
+		'wp-cli'        => array(
+			'label' => 'WP-CLI',
+			'order' => 70,
+		),
+	);
+	$items        = array();
+	$excluded_ids = array_filter(
+		array(
+			(int) get_option( 'page_on_front' ),
+			(int) get_option( 'wp_page_for_privacy_policy' ),
+		)
+	);
+
+	foreach ( $known_roots as $slug => $root ) {
+		$items[ $slug ] = array(
+			'slug'  => $slug,
+			'label' => $root['label'],
+			'url'   => home_url( '/' . $slug . '/' ),
+			'order' => $root['order'],
+		);
+	}
+
+	$pages = get_pages(
+		array(
+			'parent'      => 0,
+			'post_status' => 'publish',
+			'sort_column' => 'menu_order,post_title',
+			'sort_order'  => 'ASC',
+		)
+	);
+
+	foreach ( $pages as $page ) {
+		if ( in_array( (int) $page->ID, $excluded_ids, true ) ) {
+			continue;
+		}
+
+		$slug = sanitize_title( $page->post_name ?: $page->post_title );
+
+		$items[ $slug ] = array(
+			'slug'  => $slug,
+			'label' => isset( $known_roots[ $slug ] ) ? $known_roots[ $slug ]['label'] : get_the_title( $page ),
+			'url'   => get_permalink( $page ),
+			'order' => isset( $known_roots[ $slug ] ) ? $known_roots[ $slug ]['order'] : 1000 + (int) $page->menu_order,
+		);
+	}
+
+	usort(
+		$items,
+		static function ( array $a, array $b ): int {
+			return array( $a['order'], $a['label'] ) <=> array( $b['order'], $b['label'] );
+		}
+	);
+
+	return array_values( $items );
+}
+
+/**
+ * Infer the active docs root from the queried page or current path.
+ */
+function wp_docs_get_current_root_slug(): string {
+	$current_id = (int) get_queried_object_id();
+
+	if ( $current_id > 0 && 'page' === get_post_type( $current_id ) ) {
+		$ancestor_ids = get_post_ancestors( $current_id );
+		$root_id      = empty( $ancestor_ids ) ? $current_id : (int) end( $ancestor_ids );
+		$root         = get_post( $root_id );
+
+		if ( $root instanceof WP_Post ) {
+			return sanitize_title( $root->post_name ?: $root->post_title );
+		}
+	}
+
+	$current_path = isset( $_SERVER['REQUEST_URI'] ) ? wp_parse_url( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ), PHP_URL_PATH ) : '';
+
+	if ( ! is_string( $current_path ) ) {
+		return '';
+	}
+
+	$segments = array_values( array_filter( explode( '/', trim( $current_path, '/' ) ) ) );
+
+	return isset( $segments[0] ) ? sanitize_title( $segments[0] ) : '';
 }
 
 /**

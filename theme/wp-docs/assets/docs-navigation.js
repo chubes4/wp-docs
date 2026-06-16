@@ -306,7 +306,10 @@
 		const input = document.querySelector( '[data-wp-docs-search-input]' );
 
 		document.querySelectorAll( '[data-wp-docs-search-open]' ).forEach( ( button ) => {
-			button.addEventListener( 'click', openSearch );
+			button.addEventListener( 'click', ( event ) => {
+				event.preventDefault();
+				openSearch();
+			} );
 		} );
 
 		document.querySelectorAll( '[data-wp-docs-search-close]' ).forEach( ( button ) => {

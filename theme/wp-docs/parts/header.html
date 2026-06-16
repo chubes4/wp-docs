@@ -9,10 +9,20 @@
 </div>
 <!-- /wp:group -->
 
+<!-- wp:wp-docs/root-nav /-->
+
 <!-- wp:group {"className":"wp-docs-header__actions","layout":{"type":"flex","justifyContent":"right","flexWrap":"nowrap"}} -->
 <div class="wp-block-group wp-docs-header__actions">
-<!-- wp:navigation {"overlayMenu":"mobile","className":"wp-docs-primary-nav","layout":{"type":"flex","justifyContent":"right"}} /-->
-<!-- wp:search {"label":"Search documentation","showLabel":false,"placeholder":"Search docs...","width":260,"widthUnit":"px","buttonText":"Search","buttonUseIcon":true,"className":"wp-docs-search"} /-->
+<!-- wp:buttons {"className":"wp-docs-header-buttons","layout":{"type":"flex","justifyContent":"right","flexWrap":"nowrap"}} -->
+<div class="wp-block-buttons wp-docs-header-buttons">
+<!-- wp:button {"className":"wp-docs-header-search is-style-outline"} -->
+<div class="wp-block-button wp-docs-header-search is-style-outline"><a class="wp-block-button__link wp-element-button" href="#search" data-wp-docs-search-open>Search</a></div>
+<!-- /wp:button -->
+<!-- wp:button {"className":"wp-docs-header-learn is-style-outline"} -->
+<div class="wp-block-button wp-docs-header-learn is-style-outline"><a class="wp-block-button__link wp-element-button" href="/">Learn</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
 <!-- wp:paragraph {"className":"wp-docs-source-link"} -->
 <p class="wp-docs-source-link"><a href="https://github.com/chubes4/wp-docs">GitHub</a></p>
 <!-- /wp:paragraph -->
