@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "source_set": "script-modules-pilot",
+  "issue": "https://github.com/chubes4/wp-docs/issues/13",
+  "state": "needs-human-review",
+  "generated_at": "2026-06-16T16:38:25Z",
+  "review_items": [
+    {
+      "id": "source-verification",
+      "status": "ready-for-review",
+      "description": "Verify every behavioral claim against the source map and WordPress Core commit."
+    },
+    {
+      "id": "nav-rendering",
+      "status": "ready-for-shell-integration",
+      "description": "Use page front matter and script-modules-page-specs.json for section order, parent-child links, and labels."
+    },
+    {
+      "id": "search-indexing",
+      "status": "ready-for-shell-integration",
+      "description": "Use title, slug, section, topic, keywords, and search_weight from front matter/page specs."
+    },
+    {
+      "id": "runtime-generation",
+      "status": "blocked",
+      "description": "The repo has a recipe and docs-agent bundle reference but no local committed command that runs WP Codebox/docs-agent generation for this target."
+    }
+  ]
+}
