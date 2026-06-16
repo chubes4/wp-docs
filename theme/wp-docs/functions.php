@@ -238,9 +238,10 @@ function wp_docs_render_docs_shell_block( array $attributes, string $content ): 
 	ob_start();
 	?>
 	<div class="wp-docs-shell has-no-wp-docs-toc" data-wp-docs-shell>
-		<aside class="wp-docs-sidebar" aria-label="Docs navigation" data-wp-docs-sidebar>
+		<aside class="wp-docs-sidebar" id="wp-docs-sidebar" aria-label="Docs navigation" data-wp-docs-sidebar>
 			<div class="wp-docs-sidebar__mobile-header">
 				<strong>Docs</strong>
+				<button type="button" data-wp-docs-sidebar-toggle aria-expanded="false" aria-controls="wp-docs-sidebar">Close</button>
 			</div>
 			<div class="wp-docs-sidebar__header">
 				<span class="wp-docs-sidebar__eyebrow">Docs</span>

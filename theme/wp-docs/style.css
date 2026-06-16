@@ -271,10 +271,12 @@ a {
 }
 
 .wp-docs-mobile-menu-button,
-.wp-docs-sidebar__mobile-header,
-.wp-docs-drawer-toggle,
-.wp-docs-drawer-backdrop {
+.wp-docs-sidebar__mobile-header {
 	display: none;
+}
+
+.has-wp-docs-sidebar-open {
+	overflow: hidden;
 }
 
 .wp-docs-shell {
@@ -370,42 +372,6 @@ a {
 .wp-docs-nav__item--root > .wp-docs-nav__link {
 	color: var(--wp--preset--color--ink);
 	font-weight: 700;
-}
-
-.wp-docs-sidebar-nav {
-	gap: 0.1rem;
-	font-size: 0.875rem;
-	line-height: 1.45;
-}
-
-.wp-docs-sidebar-nav .wp-block-navigation-item,
-.wp-docs-sidebar-nav .wp-block-page-list {
-	width: 100%;
-}
-
-.wp-docs-sidebar-nav a {
-	display: block;
-	width: 100%;
-	padding: 0.45rem 0.65rem;
-	border-radius: 0.5rem;
-	color: var(--wp--preset--color--muted);
-	text-decoration: none;
-}
-
-.wp-docs-sidebar-nav .current-menu-item > a,
-.wp-docs-sidebar-nav .current-menu-ancestor > a,
-.wp-docs-sidebar-nav .current_page_item > a,
-.wp-docs-sidebar-nav .current_page_ancestor > a,
-.wp-docs-sidebar-nav a[aria-current="page"] {
-	background: var(--wp-docs-accent-soft);
-	color: var(--wp-docs-accent-text);
-	font-weight: 650;
-}
-
-.wp-docs-sidebar-nav .wp-block-navigation__submenu-container {
-	margin-left: 0.7rem;
-	padding-left: 0.5rem;
-	border-left: 1px solid var(--wp--preset--color--border);
 }
 
 .wp-docs-content {
@@ -635,6 +601,10 @@ a {
 		transition: transform 180ms ease;
 	}
 
+	.wp-docs-shell.has-open-sidebar .wp-docs-sidebar {
+		transform: translateX(0);
+	}
+
 	.wp-docs-sidebar__mobile-header {
 		display: flex;
 		align-items: center;
@@ -642,25 +612,12 @@ a {
 		margin-bottom: 1.25rem;
 	}
 
-	.wp-docs-sidebar__mobile-header label {
+	.wp-docs-sidebar__mobile-header button {
+		border: 0;
+		background: transparent;
 		color: var(--wp--preset--color--muted);
 		font-size: 0.875rem;
 		cursor: pointer;
-	}
-
-	.wp-docs-drawer-backdrop {
-		position: fixed;
-		inset: 0;
-		z-index: 70;
-		background: rgb(15 23 42 / 34%);
-	}
-
-	.wp-docs-drawer-toggle:checked ~ .wp-docs-drawer-backdrop {
-		display: block;
-	}
-
-	.wp-docs-drawer-toggle:checked ~ .wp-docs-sidebar {
-		transform: translateX(0);
 	}
 
 	.wp-docs-prev-next {

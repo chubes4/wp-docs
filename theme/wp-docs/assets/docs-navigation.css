@@ -340,4 +340,8 @@
 		max-height: none;
 		position: fixed;
 	}
+
+	.wp-docs-shell.has-open-sidebar .wp-docs-sidebar {
+		transform: translateX(0);
+	}
 }

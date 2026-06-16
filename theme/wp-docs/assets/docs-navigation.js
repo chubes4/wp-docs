@@ -350,8 +350,37 @@
 		} );
 	}
 
+	function bindSidebarToggle() {
+		const shell = document.querySelector( '[data-wp-docs-shell]' );
+		const sidebar = document.querySelector( '[data-wp-docs-sidebar]' );
+		const toggles = Array.from( document.querySelectorAll( '[data-wp-docs-sidebar-toggle]' ) );
+
+		if ( ! shell || ! sidebar || toggles.length === 0 ) {
+			return;
+		}
+
+		const setOpen = ( isOpen ) => {
+			shell.classList.toggle( 'has-open-sidebar', isOpen );
+			document.documentElement.classList.toggle( 'has-wp-docs-sidebar-open', isOpen );
+			toggles.forEach( ( toggle ) => toggle.setAttribute( 'aria-expanded', String( isOpen ) ) );
+		};
+
+		toggles.forEach( ( toggle ) => {
+			toggle.addEventListener( 'click', () => {
+				setOpen( ! shell.classList.contains( 'has-open-sidebar' ) );
+			} );
+		} );
+
+		document.addEventListener( 'keydown', ( event ) => {
+			if ( event.key === 'Escape' ) {
+				setOpen( false );
+			}
+		} );
+	}
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		buildToc();
 		bindSearch();
+		bindSidebarToggle();
 	} );
 }() );
